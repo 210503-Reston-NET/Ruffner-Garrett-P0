@@ -2,6 +2,18 @@
 ## Overview
 The store app is a software that helps customers purchase products from your business. Designed with functionality that would make virtual shopping much simpler!
 
+# Building
+
+### Makefile commands
+- `make build`
+    - Exectues: `dotnet build`
+- `make run`
+    - executes `dotnet run`
+- `make clean`
+    - executes `dotnet clean`
+- `make clearlogs`
+    - deletes log files
+
 ## Functionality
 - add a new customer
 - search customers by name
