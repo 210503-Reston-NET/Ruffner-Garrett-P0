@@ -20,7 +20,7 @@ namespace UI
 
                     break;
                     case "1":
-                       
+                       //write file
                     break;
                     case "2":
                         Console.WriteLine("Bye");
