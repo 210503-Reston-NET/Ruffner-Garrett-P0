@@ -16,4 +16,4 @@ run:
 clean: clearlogs
 	dotnet clean $(solution_root)
 clearlogs:
-	rm $(solution_root)/$(log_dir)/*
+	rm -f $(solution_root)/$(log_dir)/*
