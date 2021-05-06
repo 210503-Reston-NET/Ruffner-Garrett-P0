@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 namespace StoreModels
 {
     /// <summary>
@@ -5,7 +6,14 @@ namespace StoreModels
     /// </summary>
     public class Customer
     {
+        public Customer(string name, List<Order> orders)
+        {
+            Name = name;
+            Orders = orders;
+        }
+
         public string Name { get; set; }
         //TODO: add more properties to identify the customer
+        public List<Order> Orders { get; set; }
     }
 }

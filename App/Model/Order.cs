@@ -1,3 +1,4 @@
+using System;
 namespace StoreModels
 {
     /// <summary>
@@ -5,10 +6,17 @@ namespace StoreModels
     /// </summary>
     public class Order
     {
+        public Order(Customer customer, Location location, double total, Tuple<Item, int> items)
+        {
+            Customer = customer;
+            Location = location;
+            Total = total;
+            Items = items;
+        }
+
         public Customer Customer { get; set; }
         public Location Location { get; set; }
         public double Total { get; set; }
-
-        //TODO: add a property for the order items
+        public Tuple<Item, int> Items { get; set; }
     }
 }

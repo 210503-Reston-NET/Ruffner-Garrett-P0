@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 namespace StoreModels
 {
     /// <summary>
@@ -5,8 +6,16 @@ namespace StoreModels
     /// </summary>
     public class Location
     {
+        public Location(string address, string locationName)
+        {
+            this.Address = address;
+            this.LocationName = locationName;
+
+        }
+
         public string Address { get; set; }
         public string LocationName { get; set; }
-        //TODO: add some property for the location inventory
+
+        public List<Item> Inventory { get; set; }
     }
 }
