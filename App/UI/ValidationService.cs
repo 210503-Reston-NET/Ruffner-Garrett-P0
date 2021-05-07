@@ -6,13 +6,12 @@ namespace UI
     {
         public string ValidateCityName(string prompt)
         {
-            Regex rx = new Regex(@"[A-Za-z \.']+");
+            Regex rx = new Regex(@"^[A-Za-z \.']+$");
             string response;
             do{
                Console.WriteLine(prompt);
                response = Console.ReadLine();
-            }while(rx.IsMatch(response));
-
+            }while(!rx.IsMatch(response));
             return response;
         }
 

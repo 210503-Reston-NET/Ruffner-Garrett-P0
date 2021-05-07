@@ -11,8 +11,8 @@ namespace StoreModels
         private int _quantity;
         public Item(Product product, int quantity)
         {
-            Product = product;
-            Quantity = quantity;
+            this.Product = product;
+            this.Quantity = quantity;
         }
 
         public Product Product { get; set; }

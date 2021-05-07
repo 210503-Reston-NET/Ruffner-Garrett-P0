@@ -8,8 +8,8 @@ namespace StoreModels
     {
         public Customer(string name, List<Order> orders)
         {
-            Name = name;
-            Orders = orders;
+            this.Name = name;
+            this.Orders = orders;
         }
 
         public string Name { get; set; }

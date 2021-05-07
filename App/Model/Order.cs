@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+
 namespace StoreModels
 {
     /// <summary>
@@ -6,17 +8,17 @@ namespace StoreModels
     /// </summary>
     public class Order
     {
-        public Order(Customer customer, Location location, double total, Tuple<Item, int> items)
+        public Order(Customer customer, Location location, double total, List<Item> items)
         {
-            Customer = customer;
-            Location = location;
-            Total = total;
-            Items = items;
+            this.Customer = customer;
+            this.Location = location;
+            this.Total = total;
+            this.Items = items;
         }
 
         public Customer Customer { get; set; }
         public Location Location { get; set; }
         public double Total { get; set; }
-        public Tuple<Item, int> Items { get; set; }
+        public List<Item> Items { get; set; }
     }
 }

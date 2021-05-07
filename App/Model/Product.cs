@@ -5,8 +5,8 @@ namespace StoreModels
     {
         public Product(string productName, double price)
         {
-            ProductName = productName;
-            Price = price;
+            this.ProductName = productName;
+            this.Price = price;
         }
 
         public string ProductName { get; set; }
