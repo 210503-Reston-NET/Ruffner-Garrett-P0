@@ -5,5 +5,7 @@ namespace UI
          string ValidateString(string prompt);
 
          int ValitdateInt(string prompt);
+
+         string ValidateCityName(string prompt);
     }
 }
