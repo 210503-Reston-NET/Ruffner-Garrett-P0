@@ -10,7 +10,17 @@ namespace Data
             throw new System.NotImplementedException();
         }
 
+        public void AddLocation(Location location)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public List<Customer> GetAllCustomers()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public List<Location> GetAllLocations()
         {
             throw new System.NotImplementedException();
         }

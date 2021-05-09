@@ -16,13 +16,14 @@ namespace Data
         public void AddCustomer(Customer customer);
 
         public List<Customer> GetAllCustomers();
+        public List<Location> GetAllLocations();
         public Customer SearchCustomer(string name);
 
         public List<Order> GetOrders(Customer customer);
 
         public List<Order> GetOrders(Location location);
 
-        public Order ViewOrder();
+        public void AddLocation(Location location);
 
         public void PlaceOrder(Order order);
 
