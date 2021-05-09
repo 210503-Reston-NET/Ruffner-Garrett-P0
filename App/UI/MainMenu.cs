@@ -7,14 +7,6 @@ namespace UI
 {
     public class MainMenu : IMenu
     {   
-        // private ValidationUI _validate;
-        // private IService _service;
-
-        // public MainMenu(IService service, ValidationUI validation)
-        // {
-        //     _validate = validation;
-        //     _service = service;
-        // }
         private IService _services;
         private IValidationUI _validate;
 
@@ -58,6 +50,7 @@ namespace UI
                             target =  _services.SearchCustomers(str);
                             Console.WriteLine("Customer found: {}", target.Name);
                         }catch(Exception ex){
+                            Log.Debug(ex.Message);
                             Console.WriteLine(ex.Message);
                         }
                         Console.WriteLine("Press Any Key to Continue ...");
@@ -73,6 +66,7 @@ namespace UI
                                 Console.WriteLine(customer.Name);
                             }  
                         }catch(Exception ex){
+                            Log.Debug(ex.Message);
                             Console.WriteLine(ex.Message);
                         }                    
                         Console.WriteLine("Press Any Key to Continue ...");
@@ -87,6 +81,7 @@ namespace UI
                                 Console.WriteLine(location.ToString());
                             }  
                         }catch(Exception ex){
+                            Log.Debug(ex.Message);
                             Console.WriteLine(ex.Message);
                         }                    
                         Console.WriteLine("Press Any Key to Continue ...");
@@ -100,6 +95,7 @@ namespace UI
                                 Console.WriteLine(product.ToString());
                             }  
                         }catch(Exception ex){
+                            Log.Debug(ex.Message);
                             Console.WriteLine(ex.Message);
                         }                    
                         Console.WriteLine("Press Any Key to Continue ...");

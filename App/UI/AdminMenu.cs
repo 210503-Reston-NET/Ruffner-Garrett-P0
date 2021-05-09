@@ -36,15 +36,19 @@ namespace UI
                         repeat = false;
                     break;
                     case "1":
+                        //Add Customer
                         string str;
                         str = _validate.ValidationPrompt("Enter First and Last Name", ValidationService.ValidatePersonName);
                         try{
                         _services.AddCustomer(str);
+                        Console.WriteLine("Customer Added");
                         }catch(Exception ex){
+                            Log.Debug(ex.Message);
                             Console.WriteLine(ex.Message);
-                            Console.WriteLine("Press Any Key to Continue ...");
-                            Console.ReadKey();
+                            
                         }
+                        Console.WriteLine("Press Any Key to Continue ...");
+                        Console.ReadKey();
 
                     break;
                     case "2":
@@ -57,6 +61,7 @@ namespace UI
                             _services.AddLocation(locationName, locationAddress);
                             Console.WriteLine("Location added");
                         }catch(Exception ex){
+                            Log.Debug(ex.Message);
                             Console.WriteLine(ex.Message);
                         }
                         Console.WriteLine("Press Any Key to Continue ...");
@@ -70,6 +75,7 @@ namespace UI
                             _services.AddProduct(productName, Convert.ToDouble(productPrice));
                             Console.WriteLine("Product added");
                         }catch(Exception ex){
+                            Log.Debug(ex.Message);
                             Console.WriteLine(ex.Message);
                         }
                         Console.WriteLine("Press Any Key to Continue ...");

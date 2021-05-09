@@ -42,6 +42,14 @@ namespace Tests
             Assert.False(ValidationService.ValidateDouble(" "));
             Assert.False(ValidationService.ValidateDouble(""));
         }
+        [Fact]
+        public void StringValidationTest()
+        {
+            Assert.True(ValidationService.ValidateString("lskdfjl238 ei328*(#@* i2398"));
+            Assert.False(ValidationService.ValidateString(" "));
+            Assert.False(ValidationService.ValidateString(""));
+
+        }
         
     }
 }
