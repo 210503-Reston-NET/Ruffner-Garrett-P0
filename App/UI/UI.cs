@@ -30,6 +30,8 @@ namespace UI
             }catch(Exception ex){
                 Log.Error(ex.Message);
             }
+
+            Log.CloseAndFlush();
             // IMenu menu = new MainMenu();
             // menu.Start();
            

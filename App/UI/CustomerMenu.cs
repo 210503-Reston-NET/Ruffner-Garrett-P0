@@ -44,21 +44,35 @@ namespace UI
                     break;
                     case "1":
                         str = _validate.ValidationPrompt("Enter Customer Name", ValidationService.ValidatePersonName);
-                        _services.SearchCustomers(str);
+                        Customer target = null;
+                        try{
+                            target =  _services.SearchCustomers(str);
+                            Console.WriteLine("Customer found: {}", target.Name);
+                        }catch(Exception ex){
+                            Console.WriteLine(ex.Message);
+                        }
+                        Console.WriteLine("Press Any Key to Continue ...");
+                        Console.ReadKey();
+                       
+                        // Console.WriteLine("Press m for order Menu");
+                        // ConsoleKeyInfo key = Console.ReadKey();
+                        // if(key.ToString().ToLower() == "m"){
+
+                        // }
                     break;
                     case "2":
-                    try{
-                        List<Customer> customers =_services.GetAllCustomers();
-                        foreach (Customer customer in customers)
-                        {
-                            Console.WriteLine(customer.Name);
-                        }
-                        
-                    }catch(Exception ex){
-                        Console.WriteLine(ex.Message);
-                    }
-                    Console.WriteLine("Press Any Key to Continue ...");
-                    Console.ReadKey();
+                        try{
+                            List<Customer> customers =_services.GetAllCustomers();
+                            foreach (Customer customer in customers)
+                            {
+                                Console.WriteLine(customer.Name);
+                            }
+                            
+                        }catch(Exception ex){
+                            Console.WriteLine(ex.Message);
+                        }                    
+                        Console.WriteLine("Press Any Key to Continue ...");
+                        Console.ReadKey();
                     break;
                     case "3":
                         Log.Information("Closing Customer Menu");
