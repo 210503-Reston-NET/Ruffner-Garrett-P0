@@ -1,11 +1,35 @@
+using System;
 using StoreModels;
+using Data;
+using System.Collections.Generic;
+
 namespace Service
 {
-    public class Service : IService
+    public class Services : IService
     {
-        public void AddCustomer(string name)
+        private IRepository _repo;
+        public Services(IRepository repo)
         {
-            throw new System.NotImplementedException();
+            _repo = repo;
+        }
+
+        public void AddCustomer(string name)
+        {   
+            try
+            {
+            _repo.AddCustomer(new Customer(name, null));
+            }catch(Exception ex){
+                throw ex;
+            }
+        }
+        public List<Customer> GetAllCustomers(){
+            List<Customer> retVal;
+            try{
+                retVal = _repo.GetAllCustomers();
+            }catch(Exception ex){
+                throw ex;
+            }
+            return retVal;
         }
 
         public void placeOrder(Location location, Customer customer, Order order)
