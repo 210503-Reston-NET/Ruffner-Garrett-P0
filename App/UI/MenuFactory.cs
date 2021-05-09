@@ -1,3 +1,5 @@
+using Service;
+using Data;
 namespace UI
 {
     public class MenuFactory
@@ -5,18 +7,13 @@ namespace UI
         public static IMenu GetMenu(string menuType){
             
             switch(menuType.ToLower()){
-                case "menu":
-                 return new MainMenu();
-                case "other":
-
-                break;
-
+                case "mainmenu":
+                    return new MainMenu();
+                case "customermenu":
+                    return new CustomerMenu(new Services(new RepoFile()), new ValidationUI());
                 default:
                     return null;
             }
-            
-
-            return null;
         }
     }
 }
