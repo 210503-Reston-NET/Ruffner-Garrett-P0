@@ -1,16 +1,37 @@
+using System;
 namespace StoreModels
 {
     //This class should contain all necessary fields to define a product.
     public class Product
     {
+        private double _price;
+        private string _productName;
         public Product(string productName, double price)
         {
             this.ProductName = productName;
             this.Price = price;
         }
 
-        public string ProductName { get; set; }
-        public double Price { get; set; }
+        public string ProductName { 
+            get => _productName; 
+            set{
+                if(String.IsNullOrWhiteSpace(value)){
+                    throw new Exception("Given bad value for Product Name");
+                }else{
+                    _productName= value;
+                }
+            }
+        }
+        public double Price { 
+            get => _price; 
+            set{
+                if (value < 0){
+                    throw new Exception("Price cannot be < 0");
+                }else{
+                    _price = value;
+                }
+            }
+        }
         //todo: add more properties to define a product (maybe a category?)
     }
 }
