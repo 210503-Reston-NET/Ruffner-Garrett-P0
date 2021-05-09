@@ -49,10 +49,9 @@ namespace UI
                     break;
                     case "2":
                         //Add Location
-                        Console.WriteLine("Enter Location Name:");
-                        string locationName = Console.ReadLine();
-                        Console.WriteLine("Enter Location Address:");
-                        string locationAddress = Console.ReadLine();
+                        string locationName = _validate.ValidationPrompt("Enter Location Name:", ValidationService.ValidateString);
+                        Console.Clear();
+                        string locationAddress = _validate.ValidationPrompt("Enter Location Address:",ValidationService.ValidateAddress);
                         Console.Clear();
                         try{
                             _services.AddLocation(locationName, locationAddress);
