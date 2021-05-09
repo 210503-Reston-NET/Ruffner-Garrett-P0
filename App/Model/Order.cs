@@ -8,17 +8,29 @@ namespace StoreModels
     /// </summary>
     public class Order
     {
-        public Order(Customer customer, Location location, double total, List<Item> items)
+        public readonly DateTime _date;
+        private double _total;
+        public Order(Customer customer, Location location, List<Item> items)
         {
             this.Customer = customer;
             this.Location = location;
-            this.Total = total;
             this.Items = items;
+            this._date = DateTime.Now;
+            CalculateTotal();
         }
 
         public Customer Customer { get; set; }
         public Location Location { get; set; }
-        public double Total { get; set; }
         public List<Item> Items { get; set; }
+
+        public double Total { get=> _total; set{CalculateTotal();}}
+        
+        private void CalculateTotal(){
+            _total = 0;
+            foreach (var Item in this.Items)
+            {
+                _total += Item.Product.Price * Item.Quantity;
+            }
+        }
     }
 }

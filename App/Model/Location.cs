@@ -1,3 +1,5 @@
+using System;
+using System.Globalization;
 using System.Collections.Generic;
 namespace StoreModels
 {
@@ -6,13 +8,16 @@ namespace StoreModels
     /// </summary>
     public class Location
     {
-        public Location(string address, string locationName)
+        public Location(string locationName, string address)
         {
             this.Address = address;
             this.LocationName = locationName;
-
+            Inventory  = new List<Item>();
         }
-
+        public override string ToString()
+        {
+            return String.Format("Name: {0} Address: {1}",this.LocationName,this.Address);
+        }
         public string Address { get; set; }
         public string LocationName { get; set; }
 

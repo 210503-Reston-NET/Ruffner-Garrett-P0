@@ -6,14 +6,14 @@ namespace StoreModels
     /// </summary>
     public class Customer
     {
-        public Customer(string name, List<Order> orders)
+        public Customer(string name)
         {
             this.Name = name;
-            this.Orders = orders;
+            // this.Orders = orders;
         }
 
         public string Name { get; set; }
         //TODO: add more properties to identify the customer
-        public List<Order> Orders { get; set; }
+        // public List<Order> Orders { get; set; }
     }
 }
