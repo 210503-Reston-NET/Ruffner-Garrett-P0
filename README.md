@@ -5,10 +5,13 @@ The store app is a software that helps customers purchase products from your bus
 # Building
 
 ### Makefile commands
+Making dotnet commands easy. No more --project arguments or file paths.
 - `make build`
     - Exectues: `dotnet build`
 - `make run`
     - executes `dotnet run`
+- `make test`
+    - executes `detnet test`
 - `make clean`
     - executes `dotnet clean`
 - `make clearlogs`
