@@ -10,6 +10,11 @@ namespace Data
             throw new System.NotImplementedException();
         }
 
+        public List<Customer> GetAllCustomers()
+        {
+            throw new System.NotImplementedException();
+        }
+
         public List<Item> GetInventory(Location location)
         {
             throw new System.NotImplementedException();
