@@ -2,6 +2,7 @@ using System;
 using StoreModels;
 using Data;
 using System.Collections.Generic;
+using Serilog;
 
 namespace Service
 {
@@ -17,11 +18,22 @@ namespace Service
         {   
             try
             {
-            _repo.AddCustomer(new Customer(name, null));
+            _repo.AddCustomer(new Customer(name));
             }catch(Exception ex){
                 throw ex;
             }
         }
+
+        public void AddLocation(string name, string address)
+        {
+            try{
+            Location l = new Location(name, address);
+            _repo.AddLocation(l);
+            }catch(Exception ex){
+                throw ex;
+            }
+        }
+
         public List<Customer> GetAllCustomers(){
             List<Customer> retVal;
             try{
@@ -31,15 +43,45 @@ namespace Service
             }
             return retVal;
         }
+        public List<Location> GetAllLocations(){
+            List<Location> retVal;
+            try{
+                retVal = _repo.GetAllLocations();
+            }catch(Exception ex){
+                throw ex;
+            }
+            return retVal;
+
+        }
 
         public void placeOrder(Location location, Customer customer, Order order)
         {
             throw new System.NotImplementedException();
         }
 
-        public void SearchCustomers(string name)
+        public Customer SearchCustomers(string name)
         {
-            throw new System.NotImplementedException();
+        //    List<Customer> retVal;
+        //     try{
+        //         retVal = _repo.GetAllCustomers();
+        //     }catch(Exception ex){
+        //         throw ex;
+        //     }
+        //     return retVal;
+           
+            List<Customer> customers = GetAllCustomers();
+            
+            foreach (Customer item in customers)
+            {
+                if(name == item.Name){
+                   return item;
+                }
+            }
+            Log.Verbose("Customer: {name} not found", name);
+            throw new Exception("Customer not found");
+            
+
+            
         }
 
         public void updateInventory(Location location, Item item)
@@ -52,19 +94,15 @@ namespace Service
             throw new System.NotImplementedException();
         }
 
-        public void viewOrder(Order order)
+
+        public List<Order> viewOrders(Customer customer)
         {
-            throw new System.NotImplementedException();
+            return  _repo.GetOrders(customer);
         }
 
-        public void viewOrders(Customer customer)
+        public List<Order> viewOrders(Location location)
         {
-            throw new System.NotImplementedException();
-        }
-
-        public void viewOrders(Location location)
-        {
-            throw new System.NotImplementedException();
+             return  _repo.GetOrders(location);
         }
     }
 }
