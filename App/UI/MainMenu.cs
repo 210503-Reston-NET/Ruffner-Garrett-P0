@@ -36,7 +36,7 @@ namespace UI
                 Console.WriteLine("[1] Search For Customer");
                 Console.WriteLine("[2] List Customers");
                 Console.WriteLine("[3] List Locations");
-                Console.WriteLine("[4] ");
+                Console.WriteLine("[4] List Products");
                 Console.WriteLine("[5] Admin Menu");
 
                 
@@ -93,7 +93,17 @@ namespace UI
                         Console.ReadKey();
                     break;
                     case "4":
-                       
+                       try{
+                            List<Product> products =_services.GetAllProducts();
+                            foreach (Product product in products)
+                            {
+                                Console.WriteLine(product.ToString());
+                            }  
+                        }catch(Exception ex){
+                            Console.WriteLine(ex.Message);
+                        }                    
+                        Console.WriteLine("Press Any Key to Continue ...");
+                        Console.ReadKey();
                     break;
                     case "5":
                     //Admin Menu

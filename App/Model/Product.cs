@@ -11,7 +11,10 @@ namespace StoreModels
             this.ProductName = productName;
             this.Price = price;
         }
-
+        public override string ToString()
+        {
+            return String.Format("{0}, {1}",this.ProductName, this.Price);
+        }
         public string ProductName { 
             get => _productName; 
             set{

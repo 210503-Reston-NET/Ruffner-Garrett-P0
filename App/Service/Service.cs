@@ -34,6 +34,12 @@ namespace Service
             }
         }
 
+        public void AddProduct(string productName, double productPrice)
+        {
+            Product product = new Product(productName, productPrice);
+            _repo.AddProduct(product);
+        }
+
         public List<Customer> GetAllCustomers(){
             List<Customer> retVal;
             try{
@@ -52,6 +58,11 @@ namespace Service
             }
             return retVal;
 
+        }
+
+        public List<Product> GetAllProducts()
+        {
+           return _repo.GetAllProducts();
         }
 
         public void placeOrder(Location location, Customer customer, Order order)

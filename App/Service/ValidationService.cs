@@ -17,6 +17,10 @@ namespace Service
         public static bool ValidateString(string input){
             return !String.IsNullOrWhiteSpace(input);
         }
+        public static bool ValidateDouble(string input){
+            string pattern = @"^(-?)(0|([1-9][0-9]*))(\.[0-9]+)?$";
+            return ValidateFromRegex(input, pattern);
+        }
         public static bool ValidateAddress(string input){
             string pattern= @"^[#.0-9a-zA-Z\s,-]+$";
             if(ValidateString(input)){

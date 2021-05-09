@@ -28,6 +28,10 @@ namespace Data
         public void PlaceOrder(Order order);
 
         public List<Item> GetInventory(Location location);
+
+        public void AddProduct(Product product);
+
+        public List<Product> GetAllProducts();
         
          
     }

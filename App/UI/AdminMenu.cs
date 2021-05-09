@@ -58,13 +58,22 @@ namespace UI
                             Console.WriteLine("Location added");
                         }catch(Exception ex){
                             Console.WriteLine(ex.Message);
-                           
                         }
                         Console.WriteLine("Press Any Key to Continue ...");
                         Console.ReadKey();
                     break;
                     case "3":
-                    //Add Product
+                        //Add Product
+                        string productName = _validate.ValidationPrompt("Enter Product Name:", ValidationService.ValidateString);
+                        string productPrice = _validate.ValidationPrompt(String.Format("Enter price for {0}:",productName), ValidationService.ValidateDouble);
+                        try{
+                            _services.AddProduct(productName, Convert.ToDouble(productPrice));
+                            Console.WriteLine("Product added");
+                        }catch(Exception ex){
+                            Console.WriteLine(ex.Message);
+                        }
+                        Console.WriteLine("Press Any Key to Continue ...");
+                        Console.ReadKey();
 
                     break;
                     case "4":

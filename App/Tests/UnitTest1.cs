@@ -32,6 +32,16 @@ namespace Tests
             Assert.False(ValidationService.ValidateAddress(" "));
             Assert.False(ValidationService.ValidateAddress(""));
         }
+        [Fact]
+        public void DoubleValidatioTest()
+        {
+            Assert.True(ValidationService.ValidateDouble("39.40"));
+            Assert.True(ValidationService.ValidateDouble("-23.34"));
+            Assert.True(ValidationService.ValidateDouble("-8"));
+            Assert.True(ValidationService.ValidateDouble("70"));
+            Assert.False(ValidationService.ValidateDouble(" "));
+            Assert.False(ValidationService.ValidateDouble(""));
+        }
         
     }
 }

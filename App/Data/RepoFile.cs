@@ -14,6 +14,8 @@ namespace Data
         private const string _orderFilePath = "App/FileStorage/Orders.json";
 
         private const string _locationFilePath = "App/FileStorage/Locations.json";
+
+        private const string _productFilePath = "App/FileStorage/Products.json";
         private string _jsonString;
 
         public void AddCustomer(Customer customer)
@@ -136,11 +138,11 @@ namespace Data
 
             foreach (Customer item in Customers)
             {
-                if(customer.Name == item.Name){
+                if(customer.Name == item.Name)
+                {
                     return true;
                 }
             }
-
             return false;
         }
         private bool CheckForLocations(Location location, List<Location> locations){
@@ -152,6 +154,16 @@ namespace Data
                 }
             }
 
+            return false;
+        }
+        private bool CheckForProduct(Product product, List<Product> products){
+            foreach (Product item in products)
+            {
+                if(item.ProductName == product.ProductName)
+                {
+                    return true;
+                }
+            }
             return false;
         }
 
@@ -204,6 +216,42 @@ namespace Data
         public List<Item> GetInventory(Location location)
         {
             throw new NotImplementedException();
+        }
+
+        public void AddProduct(Product product)
+        {
+           List<Product> products = GetAllProducts();
+            //check customers for customer with the same name
+            if(CheckForProduct(product, products)){
+                //customer already exists
+                throw new Exception("Product Already Exits");
+            }
+
+            products.Add(product);
+            _jsonString = JsonSerializer.Serialize(products);
+            File.WriteAllText(_productFilePath, _jsonString);
+            return;
+        }
+
+        public List<Product> GetAllProducts()
+        {
+            Log.Verbose("Retrieving all Products from File");
+            List<Product> retVal;
+            try
+            {
+                _jsonString = File.ReadAllText(_productFilePath);
+                retVal = JsonSerializer.Deserialize<List<Product>>(_jsonString);
+            }
+            catch(JsonException){
+                Log.Error("Could not Deserialize json");
+                throw new Exception("Could not read json");
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.Message);
+                retVal = new List<Product>();
+            }
+            return retVal;
         }
     }
 }
