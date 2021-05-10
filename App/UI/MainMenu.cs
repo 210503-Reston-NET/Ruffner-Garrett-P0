@@ -1,3 +1,4 @@
+using System.Linq;
 using System;
 using Serilog;
 using Service;
@@ -30,6 +31,7 @@ namespace UI
                 Console.WriteLine("[3] List Locations");
                 Console.WriteLine("[4] List Products");
                 Console.WriteLine("[5] Admin Menu");
+                Console.WriteLine("[6] Select Product");
 
                 
                 string input = Console.ReadLine();
@@ -117,6 +119,30 @@ namespace UI
                     MenuFactory.GetMenu("adminmenu").Start();
                            
                     break;
+                    case "6":
+                        //Get Product
+                        try{
+                            
+                             List<Object> products = _services.GetAllProducts().Cast<Object>().ToList<Object>();
+                             
+                             SelectFromList menu = new SelectFromList(products);
+
+                            Object ret = menu.Start();
+                            Product prod = (Product) ret;
+
+                            Console.WriteLine("Product selected: {0}", prod.ToString());
+                            Console.WriteLine("Press Any Key to Continue ...");
+                            Console.ReadKey();
+
+                        }catch(NullReferenceException ex){
+                            Log.Verbose("Returned null from Product Selection", ex, ex.Message);
+                            Console.WriteLine("Cancelled Product Selection");
+                            Console.WriteLine("Press Any Key to Continue ...");
+                            Console.ReadKey();
+                        }catch(Exception ex){
+                            Log.Error(ex, ex.Message);
+                        }
+                        break;
                     default:
                         Console.WriteLine("Choose valid option");
                     break;

@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Text.RegularExpressions;
 using System;
 namespace Service
@@ -30,10 +31,21 @@ namespace Service
             }
             
         }
+        public static bool ValidateIntWithinRange(string input, int low, int high){
+            string pattern= @"^[-]?[0-9]+$";
+            if(ValidateFromRegex(input, pattern)){
+                return ValidateWithinRange(Int16.Parse(input), low, high);
+            }else{
+                return false;
+            }
+        }
         private static bool ValidateFromRegex(string input, string pattern)
         {
             Regex rx = new Regex(pattern);
             return rx.IsMatch(input);
+        }
+        private static bool ValidateWithinRange(int input, int low, int high){
+            return ((input <= high)&&(input >= low));
         }
         
         
