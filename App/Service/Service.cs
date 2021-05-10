@@ -16,28 +16,47 @@ namespace Service
 
         public void AddCustomer(string name)
         {   
-            try
-            {
-            _repo.AddCustomer(new Customer(name));
+            Customer newCustomer = new Customer(name);
+            if(CheckForCustomer(newCustomer, _repo.GetAllCustomers())){
+                //customer already exists
+                Log.Debug("Customer {} Already exists",newCustomer.Name);
+                throw new Exception("Customer Already Exits");
+            }
+            try{
+                _repo.AddCustomer(newCustomer);
             }catch(Exception ex){
-                throw ex;
+                Log.Error("Failed to Add Customer. {}",ex.Message);
             }
         }
 
         public void AddLocation(string name, string address)
         {
+            Location newLocation = new Location(name, address);
+            if(CheckForLocations(newLocation, _repo.GetAllLocations())){
+                //customer already exists
+                Log.Debug("Location {} Already exists",newLocation.LocationName);
+                throw new Exception("Location Already Exits");
+            }
             try{
-            Location l = new Location(name, address);
-            _repo.AddLocation(l);
+                _repo.AddLocation(newLocation);
             }catch(Exception ex){
-                throw ex;
+                Log.Error("Failed to Add Location. {}",ex.Message);
             }
         }
 
         public void AddProduct(string productName, double productPrice)
         {
-            Product product = new Product(productName, productPrice);
-            _repo.AddProduct(product);
+            Product newProduct = new Product(productName, productPrice);
+             if(CheckForProduct(newProduct, _repo.GetAllProducts())){
+                //customer already exists
+                Log.Debug("Product {} Already exists",newProduct.ProductName);
+                throw new Exception("Product Already Exits");
+            }
+            try{
+                _repo.AddProduct(newProduct);
+            }catch(Exception ex){
+                Log.Error("Failed to Add Product. {}",ex.Message);
+            }
         }
 
         public List<Customer> GetAllCustomers(){
@@ -71,15 +90,7 @@ namespace Service
         }
 
         public Customer SearchCustomers(string name)
-        {
-        //    List<Customer> retVal;
-        //     try{
-        //         retVal = _repo.GetAllCustomers();
-        //     }catch(Exception ex){
-        //         throw ex;
-        //     }
-        //     return retVal;
-           
+        {           
             List<Customer> customers = GetAllCustomers();
             
             foreach (Customer item in customers)
@@ -90,9 +101,7 @@ namespace Service
             }
             Log.Verbose("Customer: {name} not found", name);
             throw new Exception("Customer not found");
-            
-
-            
+                        
         }
 
         public void updateInventory(Location location, Item item)
@@ -114,6 +123,38 @@ namespace Service
         public List<Order> viewOrders(Location location)
         {
              return  _repo.GetOrders(location);
+        }
+        private bool CheckForCustomer(Customer customer, List<Customer> Customers){
+
+            foreach (Customer item in Customers)
+            {
+                if(customer.Name == item.Name)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        private bool CheckForLocations(Location location, List<Location> locations){
+
+            foreach (Location item in locations)
+            {
+                if((location.LocationName == item.LocationName)&&(location.Address == location.Address)){
+                    return true;
+                }
+            }
+
+            return false;
+        }
+        private bool CheckForProduct(Product product, List<Product> products){
+            foreach (Product item in products)
+            {
+                if(item.ProductName == product.ProductName)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

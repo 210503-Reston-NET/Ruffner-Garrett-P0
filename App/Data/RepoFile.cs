@@ -21,15 +21,26 @@ namespace Data
         public void AddCustomer(Customer customer)
         {
             List<Customer> customers = GetAllCustomers();
-            //check customers for customer with the same name
-            if(CheckForCustomer(customer, customers)){
-                //customer already exists
-                throw new Exception("Customer Already Exits");
-            }
-
             customers.Add(customer);
             _jsonString = JsonSerializer.Serialize(customers);
             File.WriteAllText(_customerFilePath, _jsonString);
+            return;
+        }
+
+        public void AddLocation(Location location)
+        {
+            List<Location> locations = GetAllLocations();
+            locations.Add(location);
+            _jsonString = JsonSerializer.Serialize(locations);
+            File.WriteAllText(_locationFilePath, _jsonString);
+            return;
+        }
+        public void AddProduct(Product product)
+        {
+            List<Product> products = GetAllProducts();
+            products.Add(product);
+            _jsonString = JsonSerializer.Serialize(products);
+            File.WriteAllText(_productFilePath, _jsonString);
             return;
         }
 
@@ -122,51 +133,6 @@ namespace Data
             return JsonSerializer.Deserialize<List<Item>>(_jsonString);
         }
 
-        // public List<Order> GetOrders(Customer customer)
-        // {
-        //     throw new System.NotImplementedException();
-        // }
-
-        // public List<Order> GetOrders(Location location)
-        // {
-        //     throw new System.NotImplementedException();
-        // }
-
-      
-
-        private bool CheckForCustomer(Customer customer, List<Customer> Customers){
-
-            foreach (Customer item in Customers)
-            {
-                if(customer.Name == item.Name)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-        private bool CheckForLocations(Location location, List<Location> locations){
-
-            foreach (Location item in locations)
-            {
-                if((location.LocationName == item.LocationName)&&(location.Address == location.Address)){
-                    return true;
-                }
-            }
-
-            return false;
-        }
-        private bool CheckForProduct(Product product, List<Product> products){
-            foreach (Product item in products)
-            {
-                if(item.ProductName == product.ProductName)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
         public List<Location> GetAllLocations()
         {
             Log.Verbose("Retrieving all Locations from File");
@@ -188,26 +154,6 @@ namespace Data
             return retVal;
         }
 
-        public void AddLocation(Location location)
-        {
-            List<Location> locations = GetAllLocations();
-            //check customers for customer with the same name
-            if(CheckForLocations(location, locations)){
-                //customer already exists
-                throw new Exception("Location Already Exits");
-            }
-
-            locations.Add(location);
-            _jsonString = JsonSerializer.Serialize(locations);
-            File.WriteAllText(_locationFilePath, _jsonString);
-            return;
-        }
-
-        public Customer SearchCustomer(string name)
-        {
-            throw new NotImplementedException();
-        }
-
         public void PlaceOrder(Order order)
         {
             throw new NotImplementedException();
@@ -216,21 +162,6 @@ namespace Data
         public List<Item> GetInventory(Location location)
         {
             throw new NotImplementedException();
-        }
-
-        public void AddProduct(Product product)
-        {
-           List<Product> products = GetAllProducts();
-            //check customers for customer with the same name
-            if(CheckForProduct(product, products)){
-                //customer already exists
-                throw new Exception("Product Already Exits");
-            }
-
-            products.Add(product);
-            _jsonString = JsonSerializer.Serialize(products);
-            File.WriteAllText(_productFilePath, _jsonString);
-            return;
         }
 
         public List<Product> GetAllProducts()
