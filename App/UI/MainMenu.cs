@@ -48,7 +48,8 @@ namespace UI
                         Customer target = null;
                         try{
                             target =  _services.SearchCustomers(str);
-                            Console.WriteLine("Customer found: {}", target.Name);
+                            Console.Clear();
+                            Console.WriteLine("Customer found: {0}", target.Name);
                         }catch(Exception ex){
                             Log.Debug(ex.Message);
                             Console.WriteLine(ex.Message);
@@ -61,10 +62,13 @@ namespace UI
                         //List Customers
                         try{
                             List<Customer> customers =_services.GetAllCustomers();
+                            Console.Clear();
+                            Console.WriteLine("Customers:");
                             foreach (Customer customer in customers)
                             {
                                 Console.WriteLine(customer.Name);
-                            }  
+                            }
+                            Console.WriteLine();  
                         }catch(Exception ex){
                             Log.Debug(ex.Message);
                             Console.WriteLine(ex.Message);
@@ -76,10 +80,13 @@ namespace UI
                         //List Locations
                         try{
                             List<Location> locations =_services.GetAllLocations();
+                            Console.Clear();
+                            Console.WriteLine("Locations:");
                             foreach (Location location in locations)
                             {
                                 Console.WriteLine(location.ToString());
-                            }  
+                            }
+                            Console.WriteLine();
                         }catch(Exception ex){
                             Log.Debug(ex.Message);
                             Console.WriteLine(ex.Message);
@@ -88,12 +95,16 @@ namespace UI
                         Console.ReadKey();
                     break;
                     case "4":
-                       try{
+                        //List Products
+                        try{
                             List<Product> products =_services.GetAllProducts();
+                            Console.Clear();
+                            Console.WriteLine("Products:");
                             foreach (Product product in products)
                             {
                                 Console.WriteLine(product.ToString());
                             }  
+                            Console.WriteLine();
                         }catch(Exception ex){
                             Log.Debug(ex.Message);
                             Console.WriteLine(ex.Message);

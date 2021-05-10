@@ -35,11 +35,7 @@ namespace UI
                 {
                     case "0":
                         //List Orders Newest First
-                        try{
 
-                        }catch(Exception ex){
-
-                        }
                     break;
                     case "1":
                         //List orders Oldest First
