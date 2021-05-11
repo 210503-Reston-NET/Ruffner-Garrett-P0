@@ -13,6 +13,8 @@ namespace UI
                     return new CustomerMenu(new Services(new RepoFile()), new ValidationUI());
                 case "adminmenu":
                     return new AdminMenu(new Services(new RepoFile()), new ValidationUI());
+                case "inventorymenu":
+                    return new InventoryMenu(new Services(new RepoFile()), new ValidationUI());
                 default:
                     return null;
             }

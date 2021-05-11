@@ -31,7 +31,7 @@ namespace UI
                 Console.WriteLine("[3] List Locations");
                 Console.WriteLine("[4] List Products");
                 Console.WriteLine("[5] Admin Menu");
-                Console.WriteLine("[6] Select Product");
+                // Console.WriteLine("[6] Select Product");
 
                 
                 string input = Console.ReadLine();
@@ -120,14 +120,11 @@ namespace UI
                            
                     break;
                     case "6":
-                        //Get Product
-                        try{
+                        //Get Product From List
+                        try{ 
+                            List<Object> products = _services.GetAllProducts().Cast<Object>().ToList<Object>();
                             
-                             List<Object> products = _services.GetAllProducts().Cast<Object>().ToList<Object>();
-                             
-                             SelectFromList menu = new SelectFromList(products);
-
-                            Object ret = menu.Start();
+                            Object ret = SelectFromList.Start(products);
                             Product prod = (Product) ret;
 
                             Console.WriteLine("Product selected: {0}", prod.ToString());

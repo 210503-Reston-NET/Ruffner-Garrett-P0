@@ -1,3 +1,4 @@
+using System.Net.Http.Headers;
 using System;
 
 namespace StoreModels
@@ -14,7 +15,10 @@ namespace StoreModels
             this.Product = product;
             this.Quantity = quantity;
         }
-
+        public override string ToString()
+        {
+            return String.Format("{0} In Stock: {1}",Product.ToString(), Quantity);
+        }
         public Product Product { get; set; }
 
         public int Quantity { 
@@ -27,6 +31,9 @@ namespace StoreModels
                     _quantity = value;
                 }
             } 
+        }
+        public void ChangeQuantity(int num){
+            this.Quantity = this.Quantity + num;
         }
 
     }

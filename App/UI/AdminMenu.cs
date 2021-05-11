@@ -5,7 +5,7 @@ namespace UI
 {
     public class AdminMenu : IMenu
     {
-         private IService _services;
+        private IService _services;
         private IValidationUI _validate;
 
         public AdminMenu(IService services, IValidationUI validate)
@@ -24,7 +24,7 @@ namespace UI
                 Console.WriteLine("[1] Add Customer");
                 Console.WriteLine("[2] Add Location");
                 Console.WriteLine("[3] Add Product");
-                Console.WriteLine("[4] Update Inventory");
+                Console.WriteLine("[4] Inventory Menu");
                 
                 
                 string input = Console.ReadLine();
@@ -83,8 +83,12 @@ namespace UI
 
                     break;
                     case "4":
-                    //Update Inventory
+                        //Inventory Menu
+                        MenuFactory.GetMenu("inventorymenu").Start();
                     
+                    break;
+                    case "5":
+
                     break;
                     default:
                         Console.WriteLine("Choose valid option");

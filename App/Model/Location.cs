@@ -16,7 +16,7 @@ namespace StoreModels
         }
         public override string ToString()
         {
-            return String.Format("Name: {0} Address: {1}",this.LocationName,this.Address);
+            return String.Format("{0} Address: {1}",this.LocationName,this.Address);
         }
         public string Address { get; set; }
         public string LocationName { get; set; }

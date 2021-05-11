@@ -31,10 +31,15 @@ namespace Service
             }
             
         }
+        public static bool ValidateInt(string input){
+            string pattern = @"^[-]?[0-9]+$";
+            return ValidateFromRegex(input, pattern);
+        }
+         
         public static bool ValidateIntWithinRange(string input, int low, int high){
             string pattern= @"^[-]?[0-9]+$";
             if(ValidateFromRegex(input, pattern)){
-                return ValidateWithinRange(Int16.Parse(input), low, high);
+                return ValidateWithinRange(int.Parse(input), low, high);
             }else{
                 return false;
             }

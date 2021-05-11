@@ -159,11 +159,6 @@ namespace Data
             throw new NotImplementedException();
         }
 
-        public List<Item> GetInventory(Location location)
-        {
-            throw new NotImplementedException();
-        }
-
         public List<Product> GetAllProducts()
         {
             Log.Verbose("Retrieving all Products from File");
@@ -183,6 +178,21 @@ namespace Data
                 retVal = new List<Product>();
             }
             return retVal;
+        }
+
+        public void UpdateLocation(Location location)
+        {
+            List<Location> allLocations = GetAllLocations();
+            foreach (Location item in allLocations)
+            {
+                if((location.LocationName == item.LocationName)&&(location.Address == location.Address)){
+                    allLocations.Remove(item);
+                    allLocations.Add(location);
+                    _jsonString = JsonSerializer.Serialize(allLocations);
+                    File.WriteAllText(_locationFilePath, _jsonString);
+                    break;
+                }
+            }
         }
     }
 }

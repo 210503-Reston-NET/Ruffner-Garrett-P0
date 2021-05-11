@@ -59,6 +59,28 @@ namespace Service
             }
         }
 
+        public void AddProductToInventory(Location location, Product product, int stock)
+        {
+           
+            //Create new Item for inventory
+            Item newItem = new Item(product, stock);
+            //check inventory for product
+            foreach (Item item in location.Inventory)
+            {
+                if(newItem.Product.ProductName == item.Product.ProductName){
+                    throw new Exception("Product is Already in Inventory");
+                }
+            }
+            //Product is not in inventory
+            //Add Item to Inventory
+            try{
+                location.Inventory.Add(newItem);
+                _repo.UpdateLocation(location);
+            }catch(Exception ex){
+                Log.Error("Failed to Add Product To Inventory", ex);
+            }
+        }
+
         public List<Customer> GetAllCustomers(){
             List<Customer> retVal;
             try{
@@ -107,6 +129,17 @@ namespace Service
         public void updateInventory(Location location, Item item)
         {
             throw new System.NotImplementedException();
+        }
+
+        public void updateItemInStock(Location location, Item item, int amount)
+        {
+            item.ChangeQuantity(amount);
+            try{
+                _repo.UpdateLocation(location);
+            }catch(Exception ex){
+                Log.Error("Could not update Location",ex, ex.Message);
+                item.ChangeQuantity(-amount);
+            }
         }
 
         public void viewInventory(Location location)

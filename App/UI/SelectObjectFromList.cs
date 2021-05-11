@@ -4,15 +4,9 @@ using Service;
 using StoreModels;
 namespace UI
 {
-    public class SelectFromList : ISelectFromList
+    public static class SelectFromList
     {
-        public List<Object> objects { get; set; }
-        public SelectFromList(List<Object> objects){
-            this.objects = objects;
-            
-        }
-
-        public Object Start()
+        public static Object Start(List<Object> objects)
         {
             string input;
             do{
@@ -20,7 +14,7 @@ namespace UI
                 Console.WriteLine("Choose From List:");
                 Console.WriteLine("[0] Cancel Selection");
                 int i = 1;
-                foreach (object item in this.objects)
+                foreach (object item in objects)
                 {
                     Console.WriteLine("[{0}] {1}", i++, item.ToString());
                 }
@@ -29,7 +23,7 @@ namespace UI
                if(input == "0"){
                    return null;
                }
-            }while(!ValidationService.ValidateIntWithinRange(input, 1, this.objects.Count));
+            }while(!ValidationService.ValidateIntWithinRange(input, 1, objects.Count));
 
            int selection = int.Parse(input);
            Object retVal =  objects[selection-1];

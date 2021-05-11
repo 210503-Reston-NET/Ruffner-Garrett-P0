@@ -1,1 +1,1 @@
-[{"Address":"2938 place ave","LocationName":"Pizza Hut","Inventory":[]}]
+[{"Address":"2938 place ave","LocationName":"Pizza Hut","Inventory":[{"Product":{"ProductName":"Yoyo 3.0","Price":29.99},"Quantity":12}]},{"Address":"123 Money St.","LocationName":"St. Christophers","Inventory":[{"Product":{"ProductName":"Bottle Spinner","Price":23.84},"Quantity":10}]},{"Address":"Somewhere St.","LocationName":"Macy\u0027s","Inventory":[{"Product":{"ProductName":"Bottle Spinner","Price":23.84},"Quantity":0}]}]
