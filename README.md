@@ -47,3 +47,4 @@ Making dotnet commands easy. No more --project arguments or file paths.
 - EF Core
 - Serilog
 
+![ER Diagram](https://github.com/210503-Reston-NET/Ruffner-Garrett-P0/blob/master/DB/P0_ERD.png)
