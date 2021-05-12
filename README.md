@@ -18,40 +18,32 @@ Making dotnet commands easy. No more --project arguments or file paths.
     - deletes log files
 
 ## Functionality
-- add a new customer
-- search customers by name
-- display details of an order
-- place orders to store locations for customers
-- view order history of customer
-- view order history of location
-- view location inventory
-- The customer should be able to purchase multiple products
-- Order histories should have the option to be sorted by date (latest to oldest and vice versa) or cost (least expensive to most expensive)
-- The manager should be able to replenish inventory
-
-## Models
-- Customer
-- Location
-- Orders
-- Product
-### Note
-Add as much models as you would need for your design
+- [x] add a new customer
+- [x] search customers by name
+- [ ] display details of an order
+- [ ] place orders to store locations for customers
+- [ ] view order history of customer
+- [ ] view order history of location
+- [x] view location inventory
+- [ ] The customer should be able to purchase multiple products
+- [ ] Order histories should have the option to be sorted by date (latest to oldest and vice versa) or cost (least expensive to most expensive)
+- [x] The manager should be able to replenish inventory
 
 ## Additional requirements
-- Exception Handling
-- Input validation
-- Logging (to a file, no logging to the console)
-- At least 10 unit tests
-- Data should be persisted, (no data should be hard coded)
-- You should use a DB to store data
-- DB structure should be 3NF
-- Should have an ER Diagram
-- Code should have xml documentation
+- [x] Exception Handling
+- [x] Input validation
+- [x] Logging (to a file, no logging to the console)
+- [ ] At least 10 unit tests
+- [x] Data should be persisted, (no data should be hard coded)
+- [ ] You should use a DB to store data
+- [x] DB structure should be 3NF
+- [x] Should have an ER Diagram
+- [ ] Code should have xml documentation
 
 ## Tech Stack
 - C#
-- Xunit 
-- SQLServer DB 
+- Xunit
+- SQLServer DB
 - EF Core
-- Serilog or Nlog (or any other logging frameworks)
+- Serilog
 
