@@ -18,16 +18,16 @@ Making dotnet commands easy. No more --project arguments or file paths.
     - deletes log files
 
 ## Functionality
-- add a new customer
-- search customers by name
-- display details of an order
-- place orders to store locations for customers
-- view order history of customer
-- view order history of location
-- view location inventory
-- The customer should be able to purchase multiple products
-- Order histories should have the option to be sorted by date (latest to oldest and vice versa) or cost (least expensive to most expensive)
-- The manager should be able to replenish inventory
+- [x] add a new customer
+- [x] search customers by name
+- [ ] display details of an order
+- [ ] place orders to store locations for customers
+- [ ] view order history of customer
+- [ ] view order history of location
+- [x] view location inventory
+- [ ] The customer should be able to purchase multiple products
+- [ ] Order histories should have the option to be sorted by date (latest to oldest and vice versa) or cost (least expensive to most expensive)
+- [x] The manager should be able to replenish inventory
 
 ## Models
 - Customer
