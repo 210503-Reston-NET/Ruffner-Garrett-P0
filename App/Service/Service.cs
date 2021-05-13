@@ -74,10 +74,10 @@ namespace Service
             //Product is not in inventory
             //Add Item to Inventory
             try{
-                location.Inventory.Add(newItem);
-                _repo.UpdateLocation(location);
+                _repo.AddProductToInventory(location, newItem);
             }catch(Exception ex){
-                Log.Error("Failed to Add Product To Inventory", ex);
+                Log.Error("Failed to Add Product To Inventory {0} \n{1}",ex.Message, ex.StackTrace);
+                throw new Exception("Failed to Add product to Inventory");
             }
         }
 
@@ -118,16 +118,12 @@ namespace Service
                         
         }
 
-        public void updateInventory(Location location, Item item)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public void updateItemInStock(Location location, Item item, int amount)
         {
             item.ChangeQuantity(amount);
             try{
-                _repo.UpdateLocation(location);
+                _repo.UpdateInventoryItem(location, item);
+                //_repo.UpdateLocation(location);
             }catch(Exception ex){
                 Log.Error("Could not update Location",ex, ex.Message);
                 item.ChangeQuantity(-amount);

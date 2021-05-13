@@ -21,8 +21,10 @@ namespace Data
         public List<Order> GetOrders(Location location);
         public void AddLocation(Location location);
         public void PlaceOrder(Order order);
-        public void UpdateLocation(Location location);
         public void AddProduct(Product product);
         public List<Product> GetAllProducts();
+        void UpdateInventoryItem(Location location, Item item);
+
+        public void AddProductToInventory(Location location, Item item);
     }
 }

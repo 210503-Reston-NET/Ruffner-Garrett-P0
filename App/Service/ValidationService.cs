@@ -32,7 +32,7 @@ namespace Service
             
         }
         public static bool ValidateInt(string input){
-            string pattern = @"^[-]?[0-9]+$";
+            string pattern = @"^[+-]?[0-9]+$";
             return ValidateFromRegex(input, pattern);
         }
          

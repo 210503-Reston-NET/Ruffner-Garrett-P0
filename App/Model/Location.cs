@@ -14,6 +14,12 @@ namespace StoreModels
             this.LocationName = locationName;
             Inventory  = new List<Item>();
         }
+        public Location(string locationName, string address, List<Item> inventory)
+        {
+            this.Address = address;
+            this.LocationName = locationName;
+            this.Inventory  = inventory;
+        }
         public override string ToString()
         {
             return String.Format("{0} Address: {1}",this.LocationName,this.Address);

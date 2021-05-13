@@ -16,7 +16,6 @@ namespace Service
         public List<Order> viewOrders(Location location);
         public void placeOrder(Location location, Customer customer, Order order);
         public void viewInventory(Location location);
-        public void updateInventory(Location location, Item item);
         public void updateItemInStock(Location location, Item item, int amount);
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using Service;
 using Data;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,22 @@ namespace UI
 {
     public class MenuFactory
     {
+       
+        // private p0Context _context;
+
+        // private ValidationUI _validationUI;
+
+        // private Services _services;
+
+        // public MenuFactory(p0Context context)
+        // {
+            
+        //     _context = context;
+        //     _services = new Services(new RepoDB(_context));
+        //     _validationUI = new ValidationUI();
+
+        // }
+
         public static IMenu GetMenu(string menuType){
             
             var configuration = new ConfigurationBuilder()
@@ -28,11 +45,11 @@ namespace UI
                 case "mainmenu":
                     return new MainMenu(new Services(new RepoDB(context)), new ValidationUI());
                 case "customermenu":
-                    return new CustomerMenu(new Services(new RepoFile()), new ValidationUI());
+                    return new CustomerMenu(new Services(new RepoDB(context)), new ValidationUI());
                 case "adminmenu":
                     return new AdminMenu(new Services(new RepoDB(context)), new ValidationUI());
                 case "inventorymenu":
-                    return new InventoryMenu(new Services(new RepoFile()), new ValidationUI());
+                    return new InventoryMenu(new Services(new RepoDB(context)), new ValidationUI());
                 default:
                     return null;
             }

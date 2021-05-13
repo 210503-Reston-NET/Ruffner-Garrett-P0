@@ -10,12 +10,21 @@ namespace StoreModels
     {
         public readonly DateTime _date;
         private double _total;
+
         public Order(Customer customer, Location location, List<Item> items)
         {
             this.Customer = customer;
             this.Location = location;
             this.Items = items;
             this._date = DateTime.Now;
+            CalculateTotal();
+        }
+        public Order(Customer customer, Location location, List<Item> items, DateTime date)
+        {
+            this.Customer = customer;
+            this.Location = location;
+            this.Items = items;
+            this._date = date;
             CalculateTotal();
         }
 

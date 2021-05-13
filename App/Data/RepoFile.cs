@@ -8,7 +8,7 @@ using System;
 using Serilog;
 namespace Data
 {
-    public class RepoFile : IRepository
+    public class RepoFile 
     {
         private const string _customerFilePath = "App/FileStorage/Customers.json";
         private const string _orderFilePath = "App/FileStorage/Orders.json";
