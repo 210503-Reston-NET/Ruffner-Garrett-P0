@@ -3,12 +3,12 @@
     <ProjectReference Include="..\Model\Model.csproj" />
   </ItemGroup>
 <ItemGroup>
-  <PackageReference Include="microsoft.entityframeworkcore.design" Version="5.0.6">
+  <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.6">
     <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     <PrivateAssets>all</PrivateAssets>
   </PackageReference>
-  <PackageReference Include="microsoft.entityframeworkcore.sqlserver" Version="5.0.6" />
-  <PackageReference Include="microsoft.entityframeworkcore.tools" Version="5.0.6">
+  <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.6" />
+  <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.6">
     <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     <PrivateAssets>all</PrivateAssets>
   </PackageReference>

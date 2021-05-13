@@ -1,6 +1,5 @@
 using System;
 using Xunit;
-using UI;
 using Service;
 
 namespace Tests
