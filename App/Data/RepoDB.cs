@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using StoreModels;
+using Models =StoreModels;
 using Entity = Data.Entities;
 namespace Data
 {
@@ -11,7 +11,7 @@ namespace Data
         {
             _context = context;
         }
-        public void AddCustomer(Customer customer)
+        public void AddCustomer(Models.Customer customer)
         {
             _context.Customers.Add(
                 new Entity.Customer
@@ -22,7 +22,7 @@ namespace Data
             _context.SaveChanges();
         }
 
-        public void AddLocation(Location location)
+        public void AddLocation(Models.Location location)
         {
             _context.Locations.Add(
                 new Entity.Location
@@ -34,7 +34,7 @@ namespace Data
            _context.SaveChanges();
         }
 
-        public void AddProduct(Product product)
+        public void AddProduct(Models.Product product)
         {
             _context.Products.Add(
                new Entity.Product
@@ -46,7 +46,7 @@ namespace Data
             _context.SaveChanges();
         }
 
-        public void AddProductToInventory(Location location, Item item)
+        public void AddProductToInventory(Models.Location location, Models.Item item)
         { 
             // int eLocationId = GetLocation(location);
             int eProductID = GetProduct(item.Product).Id;
@@ -64,23 +64,23 @@ namespace Data
            _context.SaveChanges();
         }
 
-        public List<Customer> GetAllCustomers()
+        public List<Models.Customer> GetAllCustomers()
         {
             return _context.Customers.Select(
-                customer => new Customer(customer.Name)
+                customer => new Models.Customer(customer.Name)
             ).ToList();
         }
 
-        public List<Location> GetAllLocations()
+        public List<Models.Location> GetAllLocations()
         {
             //WHAT HAVE I CREATED
             return _context.Locations.Select(
-                location => new Location(
+                location => new Models.Location(
                     location.LocationName, 
                     location.Address, 
                     location.InventoryItems.Select( 
-                        i => new Item(
-                            new Product(
+                        i => new Models.Item(
+                            new Models.Product(
                                 i.Product.Name, 
                                 (double) i.Product.Price
                             ),
@@ -91,14 +91,14 @@ namespace Data
             ).ToList();
         }
 
-        public List<Product> GetAllProducts()
+        public List<Models.Product> GetAllProducts()
         {
             return _context.Products.Select(
-                product => new Product(product.Name, (double) product.Price)
+                product => new Models.Product(product.Name, (double) product.Price)
             ).ToList();
         }
 
-        public List<Order> GetOrders(Customer customer)
+        public List<Models.Order> GetOrders(Models.Customer customer)
         {
             // var result = _context.Orders.Select(
             //     // order => new Order(order.Customer, order.Location, order.OrderItems, order.Date)
@@ -107,34 +107,34 @@ namespace Data
             return null;
         }
 
-        public List<Order> GetOrders(Location location)
+        public List<Models.Order> GetOrders(Models.Location location)
         {
             throw new System.NotImplementedException();
         }
 
-        public void PlaceOrder(Order order)
+        public void PlaceOrder(Models.Order order)
         {
             throw new System.NotImplementedException();
         }
         
-        private Entity.Location GetLocation(Location mLocation){
+        private Entity.Location GetLocation(Models.Location mLocation){
             Entity.Location found =  _context.Locations.FirstOrDefault( o => (o.LocationName == mLocation.LocationName) && (o.Address == mLocation.Address));
             return found;
         }
-        private Entity.Customer GetCustomer(Customer mCustomer){
+        private Entity.Customer GetCustomer(Models.Customer mCustomer){
             Entity.Customer found =  _context.Customers.FirstOrDefault( o => (o.Name == mCustomer.Name));
             return found;
         }
-        private Entity.Product GetProduct(Product mProduct){
+        private Entity.Product GetProduct(Models.Product mProduct){
             Entity.Product found = _context.Products.FirstOrDefault(o => (o.Name == mProduct.ProductName)&& (o.Price == mProduct.Price));
             return found;
         }
-        private Entity.InventoryItem GetInventoryItem(Item item, Entity.Location eLocation){
+        private Entity.InventoryItem GetInventoryItem(Models.Item item, Entity.Location eLocation){
             Entity.InventoryItem  found= _context.InventoryItems.FirstOrDefault(o=> (o.Product.Name == item.Product.ProductName) && (o.LocationId == eLocation.Id));
             return found;
         }
 
-        public void UpdateInventoryItem(Location location, Item item)
+        public void UpdateInventoryItem(Models.Location location, Models.Item item)
         {
             Entity.Location eLocation = GetLocation(location);
             Entity.InventoryItem eItem = GetInventoryItem(item, eLocation);
