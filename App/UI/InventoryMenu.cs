@@ -48,7 +48,7 @@ namespace UI
             do{
                 Console.Clear();
                 Console.WriteLine("Welcome!");
-                Console.WriteLine("Inventory Menu For Location:\n {0}:",_location.ToString());
+                Console.WriteLine("Inventory Menu For Location:\n{0}",_location.ToString());
                 Console.WriteLine("[0] Exit");
                 Console.WriteLine("[1] View Inventory Of Location");
                 Console.WriteLine("[2] Update Inventory");

@@ -83,20 +83,12 @@ namespace Service
 
         public List<Customer> GetAllCustomers(){
             List<Customer> retVal;
-            try{
-                retVal = _repo.GetAllCustomers();
-            }catch(Exception ex){
-                throw ex;
-            }
+            retVal = _repo.GetAllCustomers();
             return retVal;
         }
         public List<Location> GetAllLocations(){
             List<Location> retVal;
-            try{
-                retVal = _repo.GetAllLocations();
-            }catch(Exception ex){
-                throw ex;
-            }
+            retVal = _repo.GetAllLocations();
             return retVal;
 
         }
