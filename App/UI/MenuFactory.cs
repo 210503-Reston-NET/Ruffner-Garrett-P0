@@ -26,11 +26,11 @@ namespace UI
 
             switch(menuType.ToLower()){
                 case "mainmenu":
-                    return new MainMenu(new Services(new RepoFile()), new ValidationUI());
+                    return new MainMenu(new Services(new RepoDB(context)), new ValidationUI());
                 case "customermenu":
                     return new CustomerMenu(new Services(new RepoFile()), new ValidationUI());
                 case "adminmenu":
-                    return new AdminMenu(new Services(new RepoFile()), new ValidationUI());
+                    return new AdminMenu(new Services(new RepoDB(context)), new ValidationUI());
                 case "inventorymenu":
                     return new InventoryMenu(new Services(new RepoFile()), new ValidationUI());
                 default:
