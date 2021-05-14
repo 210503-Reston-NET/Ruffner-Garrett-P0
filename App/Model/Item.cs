@@ -17,7 +17,7 @@ namespace StoreModels
         }
         public override string ToString()
         {
-            return String.Format("{0} In Stock: {1}",Product.ToString(), Quantity);
+            return String.Format("{0} Quantity: {1}",Product.ToString(), Quantity);
         }
         public Product Product { get; set; }
 

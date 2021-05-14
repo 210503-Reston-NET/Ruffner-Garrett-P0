@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Diagnostics;
 using System.Security.Cryptography.X509Certificates;
 using System.Linq;
@@ -69,6 +70,7 @@ namespace UI
                     break;
                     case "6":
                     // Create Orders
+                        CreateNewOrder();
 
                     break;
                     case "7":
@@ -216,8 +218,9 @@ namespace UI
                 //get list of order history
                 List<Object> orderList =  _services.GetOrders(customer).Cast<Object>().ToList<Object>();
                 ret = SelectFromList.Start(orderList);
-                ret.ToString();
-                // Console.WriteLine("Customer selected: {0}", customer.ToString());
+                Order o = (Order) ret;
+                List<Item> items = o.Items;
+                items.ForEach(d => Console.WriteLine(d.ToString()));
                 Console.WriteLine("Press Any Key to Continue ...");
                 Console.ReadKey();
 
@@ -235,53 +238,30 @@ namespace UI
         }
         private void CreateNewOrder(){
             //Get Customer
-            Customer cust;
-            try{ 
-                List<Object> objs = _services.GetAllCustomers().Cast<Object>().ToList<Object>();
-                
-                Object ret = SelectFromList.Start(objs);
-                cust = (Customer) ret;
-
-                // Console.WriteLine("Customer selected: {0}", customer.ToString());
-                Console.WriteLine("Press Any Key to Continue ...");
-                Console.ReadKey();
-
-            }catch(NullReferenceException ex){
-                Log.Verbose("Returned null from Customer Selection", ex, ex.Message);
-                Console.WriteLine("Cancelled Selection");
-                Console.WriteLine("Press Any Key to Continue ...");
-                Console.ReadKey();
-                return;
-            }catch(Exception ex){
-                Log.Error(ex, ex.Message);
-            }
+            Customer cust = GetCustomer();
+           
 
             //Get Location
-            Location loc;
-            try{ 
-                List<Object> objectList = _services.GetAllLocations().Cast<Object>().ToList<Object>();
-                
-                Object ret = SelectFromList.Start(objectList);
-                loc = (Location) ret;
-                
-
-            }catch(NullReferenceException ex){
-                Log.Verbose("Returned null from Location Selection", ex, ex.Message);
-                Console.WriteLine("Cancelled Location Selection");
-                Console.WriteLine("Press Any Key to Continue ...");
-                Console.ReadKey();
-                return;
-            }catch(Exception ex){
-                Log.Error(ex, ex.Message);
-                return;
-            }
+            Location loc = GetLocation();
+            
             //Choose Items and Quanitity from inventory
             List<Item> itms = GetItems(loc);
             
+            Double total = _services.CalculateOrderTotal(itms);
 
-            //Calculate Total
-
-
+            Console.WriteLine("Order Total is: {0}", total);
+            Console.WriteLine("Press f to complete order\nAny other Key to Cancel ...");
+            ConsoleKeyInfo key = Console.ReadKey();
+            if (key.Key.ToString().ToLower()== "f"){
+                try{
+                    _services.PlaceOrder(loc, cust, itms);
+                    Console.WriteLine("Order Placed");
+                    Console.WriteLine("Press Any Key to Continue ...");
+                    Console.ReadKey();
+                }catch(Exception ex ){
+                    Log.Error("error from main", ex, ex.Message, ex.StackTrace);
+                }
+            }
         }
 
         private List<Item> GetItems(Location loc){
@@ -308,6 +288,54 @@ namespace UI
                     
                 }
                 return selectedItem;
+        }
+
+        private Customer GetCustomer(){
+            Customer cust = null;
+             try{ 
+                List<Object> objs = _services.GetAllCustomers().Cast<Object>().ToList<Object>();
+                
+                Object ret = SelectFromList.Start(objs);
+                cust = (Customer) ret;
+
+                Console.WriteLine("Customer selected: {0}", cust.ToString());
+                Console.WriteLine("Press Any Key to Continue ...");
+                Console.ReadKey();
+
+            }catch(NullReferenceException ex){
+                Log.Verbose("Returned null from Customer Selection", ex, ex.Message);
+                Console.WriteLine("Cancelled Selection");
+                Console.WriteLine("Press Any Key to Continue ...");
+                Console.ReadKey();
+                
+            }catch(Exception ex){
+                Log.Error(ex, ex.Message);
+            }
+            return cust;
+        }
+        private Location GetLocation(){
+            Location loc = null;
+            try{ 
+                List<Object> objectList = _services.GetAllLocations().Cast<Object>().ToList<Object>();
+                
+                Object ret = SelectFromList.Start(objectList);
+                loc = (Location) ret;
+                Console.WriteLine("Location selected: {0}", loc.ToString());
+                Console.WriteLine("Press Any Key to Continue ...");
+                Console.ReadKey();
+                
+
+            }catch(NullReferenceException ex){
+                Log.Verbose("Returned null from Location Selection", ex, ex.Message);
+                Console.WriteLine("Cancelled Location Selection");
+                Console.WriteLine("Press Any Key to Continue ...");
+                Console.ReadKey();
+               
+            }catch(Exception ex){
+                Log.Error(ex, ex.Message);
+              
+            }
+            return loc;
         }
     }
 }

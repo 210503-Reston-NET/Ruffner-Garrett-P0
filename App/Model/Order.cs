@@ -27,6 +27,10 @@ namespace StoreModels
             this._date = date;
             CalculateTotal();
         }
+        public override string ToString()
+        {
+            return String.Format("Customer: {0} Location: {1}\nOn: {2} Total:{3} ", this.Customer,this.Location,this._date,this._total);
+        }
 
         public Customer Customer { get; set; }
         public Location Location { get; set; }

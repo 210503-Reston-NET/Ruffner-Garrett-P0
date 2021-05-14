@@ -1,3 +1,4 @@
+using System.IO;
 using System;
 using StoreModels;
 using Data;
@@ -108,9 +109,22 @@ namespace Service
            return _repo.GetAllProducts();
         }
 
-        public void placeOrder(Location location, Customer customer, Order order)
+        public void PlaceOrder(Location location, Customer customer, List<Item> items)
         {
-            throw new System.NotImplementedException();
+            Order order = new Order(customer, location, items);
+            //make sure that location has stock then decrease stock
+            // Ehhhh I'll do it later
+            // foreach (Item item in items)
+            // {
+            //     location.Inventory.
+            // }
+            try{
+            _repo.PlaceOrder(order);
+            }catch(Exception ex )
+            {
+
+                Log.Error("Failed to place order\n{0}\n{1}\n{2}", ex, ex.Message, ex.StackTrace);
+            }
         }
 
         public Customer SearchCustomers(string name)
@@ -173,5 +187,14 @@ namespace Service
             return false;
         }
 
+        public double CalculateOrderTotal(List<Item> items)
+        {
+            double total = 0;
+            foreach(Item item in items)
+            {
+               total += item.Product.Price * item.Quantity;
+            }
+            return total;
+        }
     }
 }

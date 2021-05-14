@@ -1,3 +1,5 @@
+using System.Data;
+using System.Runtime.CompilerServices;
 using System.Reflection.Metadata;
 using System.Collections.Generic;
 using System.Linq;
@@ -103,7 +105,10 @@ namespace Data
 
         public List<Models.Order> GetOrders(Models.Customer customer)
         {
-            int customerId = GetCustomer(customer).Id;
+            //OH GOD ITS SO GROSS
+            //SOMEONE HELP ME FIND A BETTER WAY
+            //Had to use client side Evelaution for where clause
+            // int customerId = GetCustomer(customer).Id;
             List<Models.Order> mOrders=  _context.Orders.Select(
                 order => new Models.Order(
                    new Models.Customer(order.Customer.Name, order.CustomerId),
@@ -115,7 +120,8 @@ namespace Data
                                (double) i.Product.Price),
                                (int) i.Quantity)).ToList(),
                 (DateTime) order.Date)
-            ).Where(order => order.Customer.ID == customerId).ToList();
+            ).AsEnumerable().Where(order => order.Customer.Name == customer.Name).ToList();
+            
 
             return mOrders;          
             
@@ -133,12 +139,55 @@ namespace Data
 
         public List<Models.Order> GetOrders(Models.Location location)
         {
-            return null;
+            List<Models.Order> mOrders=  _context.Orders.Select(
+                order => new Models.Order(
+                   new Models.Customer(order.Customer.Name, order.CustomerId),
+                   new Models.Location(order.Location.LocationName, order.Location.Address),
+                   order.OrderItems.Select(
+                       i => new Models.Item(
+                           new Models.Product(
+                               i.Product.Name,
+                               (double) i.Product.Price),
+                               (int) i.Quantity)).ToList(),
+                (DateTime) order.Date)
+            ).AsEnumerable().Where(order => order.Location.LocationName == location.LocationName).ToList();
+
+            return mOrders;
         }
 
-        public void PlaceOrder(Models.Order order)
+        public void PlaceOrder(Models.Order mOrder)
         {
-            throw new System.NotImplementedException();
+            // var eCustomer = GetCustomer(mOrder.Customer);
+            // var eLocation = GetLocation(mOrder.Location);
+           
+        
+            Entity.Order eOrder=  new Entity.Order
+            {
+                Customer = GetCustomer(mOrder.Customer),
+                Location = GetLocation(mOrder.Location),
+                Date = mOrder._date,
+                Total = mOrder.Total, 
+            };
+            
+            
+            _context.Orders.Add(eOrder);
+            _context.SaveChanges();
+            //  List<Entity.OrderItem> eOrderItems = null;
+            // foreach (var item in mOrder.Items)
+            // {
+            //     eOrderItems.Add(new Entity.OrderItem{Quantity = item.Quantity, Product = GetProduct(item.Product)});
+            // }
+            // _context.Add(eOrderItems);
+               
+            mOrder.Items.ForEach(item => _context.OrderItems.Add(
+            new Entity.OrderItem
+            {
+                OrderId = eOrder.Id,
+                Product = GetProduct(item.Product),
+                Quantity = item.Quantity,
+            }));
+
+            _context.SaveChanges();
         }
         
         private Entity.Location GetLocation(Models.Location mLocation){

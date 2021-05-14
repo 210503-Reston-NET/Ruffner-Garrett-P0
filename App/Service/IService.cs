@@ -14,8 +14,10 @@ namespace Service
         public Customer SearchCustomers(string name);
         public List<Order> GetOrders(Customer customer);
         public List<Order> GetOrders(Location location);
-        public void placeOrder(Location location, Customer customer, Order order);
+        public void PlaceOrder(Location location, Customer customer, List<Item> items);
         public void updateItemInStock(Location location, Item item, int amount);
+
+        public double CalculateOrderTotal(List<Item> items);
 
     }
 }

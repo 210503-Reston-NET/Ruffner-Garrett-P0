@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 namespace StoreModels
 {
@@ -15,7 +16,10 @@ namespace StoreModels
         {
             this.ID = id;
         }
-
+        public override string ToString()
+        {
+            return String.Format("{0}", this.Name);
+        }
         public string Name { get; set; }
         public int ID { get; set; }
         //TODO: add more properties to identify the customer
