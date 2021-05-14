@@ -93,6 +93,16 @@ namespace Service
 
         }
 
+        public List<Order> GetOrders(Customer customer)
+        {
+           return _repo.GetOrders(customer);
+        }
+
+        public List<Order> GetOrders(Location location)
+        {
+            return _repo.GetOrders(location);
+        }
+
         public List<Product> GetAllProducts()
         {
            return _repo.GetAllProducts();
@@ -130,21 +140,6 @@ namespace Service
             }
         }
 
-        public void viewInventory(Location location)
-        {
-            throw new System.NotImplementedException();
-        }
-
-
-        public List<Order> viewOrders(Customer customer)
-        {
-            return  _repo.GetOrders(customer);
-        }
-
-        public List<Order> viewOrders(Location location)
-        {
-             return  _repo.GetOrders(location);
-        }
         private bool CheckForCustomer(Customer customer, List<Customer> Customers){
 
             foreach (Customer item in Customers)
@@ -177,5 +172,6 @@ namespace Service
             }
             return false;
         }
+
     }
 }

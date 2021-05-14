@@ -10,21 +10,6 @@ namespace UI
 {
     public class MenuFactory
     {
-       
-        // private p0Context _context;
-
-        // private ValidationUI _validationUI;
-
-        // private Services _services;
-
-        // public MenuFactory(p0Context context)
-        // {
-            
-        //     _context = context;
-        //     _services = new Services(new RepoDB(_context));
-        //     _validationUI = new ValidationUI();
-
-        // }
 
         public static IMenu GetMenu(string menuType){
             

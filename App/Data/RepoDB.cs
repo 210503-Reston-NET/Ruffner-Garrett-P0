@@ -1,7 +1,10 @@
+using System.Reflection.Metadata;
 using System.Collections.Generic;
 using System.Linq;
 using Models =StoreModels;
 using Entity = Data.Entities;
+using System;
+
 namespace Data
 {
     public class RepoDB : IRepository
@@ -49,7 +52,7 @@ namespace Data
         public void AddProductToInventory(Models.Location location, Models.Item item)
         { 
             // int eLocationId = GetLocation(location);
-            int eProductID = GetProduct(item.Product).Id;
+            // int eProductID = GetProduct(item.Product).Id;
             //Need location ID PRoduct ID and quantity
             _context.InventoryItems.Add( 
                 new Entity.InventoryItem
@@ -100,16 +103,37 @@ namespace Data
 
         public List<Models.Order> GetOrders(Models.Customer customer)
         {
-            // var result = _context.Orders.Select(
-            //     // order => new Order(order.Customer, order.Location, order.OrderItems, order.Date)
-            // ).ToList();
+            int customerId = GetCustomer(customer).Id;
+            List<Models.Order> mOrders=  _context.Orders.Select(
+                order => new Models.Order(
+                   new Models.Customer(order.Customer.Name, order.CustomerId),
+                   new Models.Location(order.Location.LocationName, order.Location.Address),
+                   order.OrderItems.Select(
+                       i => new Models.Item(
+                           new Models.Product(
+                               i.Product.Name,
+                               (double) i.Product.Price),
+                               (int) i.Quantity)).ToList(),
+                (DateTime) order.Date)
+            ).Where(order => order.Customer.ID == customerId).ToList();
 
-            return null;
+            return mOrders;          
+            
         }
+        // order => new Models.Order(
+        //            new Models.Customer(order.Customer.Name),
+        //            new Models.Location(order.Location.LocationName, order.Location.Address),
+        //            order.OrderItems.Select(
+        //                i => new Models.Item(
+        //                    new Models.Product(
+        //                        i.Product.Name,
+        //                        (double) i.Product.Price),
+        //                        (int) i.Quantity)).ToList(),
+        //         (DateTime) order.Date)
 
         public List<Models.Order> GetOrders(Models.Location location)
         {
-            throw new System.NotImplementedException();
+            return null;
         }
 
         public void PlaceOrder(Models.Order order)
@@ -130,7 +154,7 @@ namespace Data
             return found;
         }
         private Entity.InventoryItem GetInventoryItem(Models.Item item, Entity.Location eLocation){
-            Entity.InventoryItem  found= _context.InventoryItems.FirstOrDefault(o=> (o.Product.Name == item.Product.ProductName) && (o.LocationId == eLocation.Id));
+            Entity.InventoryItem found = _context.InventoryItems.FirstOrDefault(o=> (o.Product.Name == item.Product.ProductName) && (o.LocationId == eLocation.Id));
             return found;
         }
 

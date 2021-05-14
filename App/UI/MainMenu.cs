@@ -30,8 +30,10 @@ namespace UI
                 Console.WriteLine("[2] List Customers");
                 Console.WriteLine("[3] List Locations");
                 Console.WriteLine("[4] List Products");
-                Console.WriteLine("[5] Admin Menu");
-                // Console.WriteLine("[6] Select Product");
+                Console.WriteLine("[5] View Orders");
+                Console.WriteLine("[6] Create Order");
+                Console.WriteLine("[7] Admin Menu");
+                // Console.WriteLine("[8] Select Product");
 
                 
                 string input = Console.ReadLine();
@@ -45,81 +47,34 @@ namespace UI
                     break;
                     case "1":
                         // Search for Customer
-                        string str;
-                        str = _validate.ValidationPrompt("Enter Customer Name", ValidationService.ValidatePersonName);
-                        Customer target = null;
-                        try{
-                            target =  _services.SearchCustomers(str);
-                            Console.Clear();
-                            Console.WriteLine("Customer found: {0}", target.Name);
-                        }catch(Exception ex){
-                            Log.Debug(ex.Message);
-                            Console.WriteLine(ex.Message);
-                        }
-                        Console.WriteLine("Press Any Key to Continue ...");
-                        Console.ReadKey();
-                   
+                        SearchForCustomer();
                     break;
                     case "2":
                         //List Customers
-                        try{
-                            List<Customer> customers =_services.GetAllCustomers();
-                            Console.Clear();
-                            Console.WriteLine("Customers:");
-                            foreach (Customer customer in customers)
-                            {
-                                Console.WriteLine(customer.Name);
-                            }
-                            Console.WriteLine();  
-                        }catch(Exception ex){
-                            Log.Debug(ex.Message);
-                            Console.WriteLine(ex.Message);
-                        }                    
-                        Console.WriteLine("Press Any Key to Continue ...");
-                        Console.ReadKey();
+                        ListCustomers();
                     break;
                     case "3":
                         //List Locations
-                        try{
-                            List<Location> locations =_services.GetAllLocations();
-                            Console.Clear();
-                            Console.WriteLine("Locations:");
-                            foreach (Location location in locations)
-                            {
-                                Console.WriteLine(location.ToString());
-                            }
-                            Console.WriteLine();
-                        }catch(Exception ex){
-                            Log.Debug(ex.Message);
-                            Console.WriteLine(ex.Message);
-                        }                    
-                        Console.WriteLine("Press Any Key to Continue ...");
-                        Console.ReadKey();
+                        ListLocations();
                     break;
                     case "4":
                         //List Products
-                        try{
-                            List<Product> products =_services.GetAllProducts();
-                            Console.Clear();
-                            Console.WriteLine("Products:");
-                            foreach (Product product in products)
-                            {
-                                Console.WriteLine(product.ToString());
-                            }  
-                            Console.WriteLine();
-                        }catch(Exception ex){
-                            Log.Debug(ex.Message);
-                            Console.WriteLine(ex.Message);
-                        }                    
-                        Console.WriteLine("Press Any Key to Continue ...");
-                        Console.ReadKey();
+                        ListProducts();
                     break;
                     case "5":
+                    // View Orders
+                        ViewOrders();
+                    break;
+                    case "6":
+                    // Create Orders
+
+                    break;
+                    case "7":
                     //Admin Menu
                     MenuFactory.GetMenu("adminmenu").Start();
                            
                     break;
-                    case "6":
+                    case "8":
                         //Get Product From List
                         try{ 
                             List<Object> products = _services.GetAllProducts().Cast<Object>().ToList<Object>();
@@ -147,6 +102,137 @@ namespace UI
                 }
             } while(repeat);
             
+        }
+
+        private void SearchForCustomer(){
+            string str;
+            str = _validate.ValidationPrompt("Enter Customer Name", ValidationService.ValidatePersonName);
+            Customer target = null;
+            try{
+                target =  _services.SearchCustomers(str);
+                Console.Clear();
+                Console.WriteLine("Customer found: {0}", target.Name);
+            }catch(Exception ex){
+                Log.Debug(ex.Message);
+                Console.WriteLine(ex.Message);
+            }
+            Console.WriteLine("Press Any Key to Continue ...");
+            Console.ReadKey();
+        }
+
+        private void ListCustomers(){
+            try{
+                List<Customer> customers =_services.GetAllCustomers();
+                Console.Clear();
+                Console.WriteLine("Customers:");
+                foreach (Customer customer in customers)
+                {
+                    Console.WriteLine(customer.Name);
+                }
+                Console.WriteLine();  
+            }catch(Exception ex){
+                Log.Debug(ex.Message);
+                Console.WriteLine(ex.Message);
+            }                    
+            Console.WriteLine("Press Any Key to Continue ...");
+            Console.ReadKey();
+        }
+
+        private void ListLocations(){
+            try{
+                List<Location> locations =_services.GetAllLocations();
+                Console.Clear();
+                Console.WriteLine("Locations:");
+                foreach (Location location in locations)
+                {
+                    Console.WriteLine(location.ToString());
+                }
+                Console.WriteLine();
+            }catch(Exception ex){
+                Log.Debug(ex.Message);
+                Console.WriteLine(ex.Message);
+            }                    
+            Console.WriteLine("Press Any Key to Continue ...");
+            Console.ReadKey();
+        }
+        private void ListProducts(){
+             try{
+                List<Product> products =_services.GetAllProducts();
+                Console.Clear();
+                Console.WriteLine("Products:");
+                foreach (Product product in products)
+                {
+                    Console.WriteLine(product.ToString());
+                }  
+                Console.WriteLine();
+            }catch(Exception ex){
+                Log.Debug(ex.Message);
+                Console.WriteLine(ex.Message);
+            }                    
+            Console.WriteLine("Press Any Key to Continue ...");
+            Console.ReadKey();
+        }
+
+        private void ViewOrders(){
+            //view by location or by customer
+            bool repeat = true;
+                do
+                {
+                    Console.Clear();
+                    Console.WriteLine("Main Menu:");
+                    Console.WriteLine("[0] Exit");
+                    Console.WriteLine("[1] View By customer");
+                    Console.WriteLine("[2] View By Location");
+                    String str = Console.ReadLine();
+                    switch (str) {
+                        case "0":
+                           repeat = false;
+                        break;
+                        case "1":
+                            //View by customer
+                            //Choose customer
+                            ViewByCustomer();
+                        break;
+                        case "2":
+                            //View by Location
+                            //Choose location
+                        break;
+                    }
+                } while (repeat);
+            //order by price asc/desc
+
+            //order by date asc/desc
+        }
+
+        private void ViewByCustomer(){
+            try{ 
+                List<Object> objs = _services.GetAllCustomers().Cast<Object>().ToList<Object>();
+                
+                Object ret = SelectFromList.Start(objs);
+                Customer customer = (Customer) ret;
+
+                //get list of order history
+                List<Object> orderList =  _services.GetOrders(customer).Cast<Object>().ToList<Object>();
+                ret = SelectFromList.Start(orderList);
+                ret.ToString();
+                // Console.WriteLine("Customer selected: {0}", customer.ToString());
+                Console.WriteLine("Press Any Key to Continue ...");
+                Console.ReadKey();
+
+            }catch(NullReferenceException ex){
+                Log.Verbose("Returned null from Customer Selection", ex, ex.Message);
+                Console.WriteLine("Cancelled Selection");
+                Console.WriteLine("Press Any Key to Continue ...");
+                Console.ReadKey();
+            }catch(Exception ex){
+                Log.Error(ex, ex.Message);
+            }
+        }
+        private void ViewByLocation(){
+
+        }
+        private void CreateNewOrder(){
+
         }
     }
 }
