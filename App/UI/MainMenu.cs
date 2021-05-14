@@ -239,14 +239,16 @@ namespace UI
         private void CreateNewOrder(){
             //Get Customer
             Customer cust = GetCustomer();
-           
+            if (cust == null) return;
 
             //Get Location
             Location loc = GetLocation();
+            if(loc == null) return;
             
             //Choose Items and Quanitity from inventory
             List<Item> itms = GetItems(loc);
-            
+            if(itms == null) return;
+
             Double total = _services.CalculateOrderTotal(itms);
 
             Console.WriteLine("Order Total is: {0}", total);
@@ -259,7 +261,9 @@ namespace UI
                     Console.WriteLine("Press Any Key to Continue ...");
                     Console.ReadKey();
                 }catch(Exception ex ){
-                    Log.Error("error from main", ex, ex.Message, ex.StackTrace);
+                    Console.WriteLine("Order Failed");
+                    Console.WriteLine("Press Any Key to Continue ...");
+                    Log.Error("Placing An Order Failed", ex, ex.Message, ex.StackTrace);
                 }
             }
         }
@@ -298,9 +302,10 @@ namespace UI
                 Object ret = SelectFromList.Start(objs);
                 cust = (Customer) ret;
 
+                Console.Clear();
                 Console.WriteLine("Customer selected: {0}", cust.ToString());
-                Console.WriteLine("Press Any Key to Continue ...");
-                Console.ReadKey();
+                // Console.WriteLine("Press Any Key to Continue ...");
+                // Console.ReadKey();
 
             }catch(NullReferenceException ex){
                 Log.Verbose("Returned null from Customer Selection", ex, ex.Message);
@@ -320,9 +325,10 @@ namespace UI
                 
                 Object ret = SelectFromList.Start(objectList);
                 loc = (Location) ret;
+                Console.Clear();
                 Console.WriteLine("Location selected: {0}", loc.ToString());
-                Console.WriteLine("Press Any Key to Continue ...");
-                Console.ReadKey();
+                // Console.WriteLine("Press Any Key to Continue ...");
+                // Console.ReadKey();
                 
 
             }catch(NullReferenceException ex){
