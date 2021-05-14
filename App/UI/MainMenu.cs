@@ -1,3 +1,5 @@
+using System.Diagnostics;
+using System.Security.Cryptography.X509Certificates;
 using System.Linq;
 using System;
 using Serilog;
@@ -232,7 +234,80 @@ namespace UI
 
         }
         private void CreateNewOrder(){
+            //Get Customer
+            Customer cust;
+            try{ 
+                List<Object> objs = _services.GetAllCustomers().Cast<Object>().ToList<Object>();
+                
+                Object ret = SelectFromList.Start(objs);
+                cust = (Customer) ret;
 
+                // Console.WriteLine("Customer selected: {0}", customer.ToString());
+                Console.WriteLine("Press Any Key to Continue ...");
+                Console.ReadKey();
+
+            }catch(NullReferenceException ex){
+                Log.Verbose("Returned null from Customer Selection", ex, ex.Message);
+                Console.WriteLine("Cancelled Selection");
+                Console.WriteLine("Press Any Key to Continue ...");
+                Console.ReadKey();
+                return;
+            }catch(Exception ex){
+                Log.Error(ex, ex.Message);
+            }
+
+            //Get Location
+            Location loc;
+            try{ 
+                List<Object> objectList = _services.GetAllLocations().Cast<Object>().ToList<Object>();
+                
+                Object ret = SelectFromList.Start(objectList);
+                loc = (Location) ret;
+                
+
+            }catch(NullReferenceException ex){
+                Log.Verbose("Returned null from Location Selection", ex, ex.Message);
+                Console.WriteLine("Cancelled Location Selection");
+                Console.WriteLine("Press Any Key to Continue ...");
+                Console.ReadKey();
+                return;
+            }catch(Exception ex){
+                Log.Error(ex, ex.Message);
+                return;
+            }
+            //Choose Items and Quanitity from inventory
+            List<Item> itms = GetItems(loc);
+            
+
+            //Calculate Total
+
+
+        }
+
+        private List<Item> GetItems(Location loc){
+            //Only allows one item to be selected also no stock checking
+            List<Item> selectedItem = new List<Item>();
+            string str;
+                try{ 
+                    List<Object> objectList = loc.Inventory.Cast<Object>().ToList<Object>();
+                    
+                    Object ret = SelectFromList.Start(objectList);
+                    Item itm = (Item) ret;
+                    Product p = itm.Product;
+                    str = _validate.ValidationPrompt("Enter Qunatity to Purchase", ValidationService.ValidateInt);
+                    selectedItem.Add(new Item(p, int.Parse(str)));
+                    
+                }catch(NullReferenceException ex){
+                    Log.Verbose("Returned null from Item Selection", ex, ex.Message);
+                    Console.WriteLine("Cancelled Item Selection");
+                    Console.WriteLine("Press Any Key to Continue ...");
+                    Console.ReadKey();
+                    
+                }catch(Exception ex){
+                    Log.Error(ex, ex.Message);
+                    
+                }
+                return selectedItem;
         }
     }
 }
