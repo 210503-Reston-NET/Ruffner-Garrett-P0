@@ -47,7 +47,6 @@ namespace UI
             string str;
             do{
                 Console.Clear();
-                Console.WriteLine("Welcome!");
                 Console.WriteLine("Inventory Menu For Location:\n{0}",_location.ToString());
                 Console.WriteLine("[0] Exit");
                 Console.WriteLine("[1] View Inventory Of Location");
@@ -88,16 +87,19 @@ namespace UI
                             
                             Object ret = SelectFromList.Start(objectList);
                             selectedItem = (Item) ret;
+                            if(selectedItem ==null){
+                                throw new NullReferenceException("No Item Selected");
+                            }
                             
                         }catch(NullReferenceException ex){
                             Log.Verbose("Returned null from Item Selection", ex, ex.Message);
                             Console.WriteLine("Cancelled Item Selection");
                             Console.WriteLine("Press Any Key to Continue ...");
                             Console.ReadKey();
-                            return;
+                            break;
                         }catch(Exception ex){
                             Log.Error(ex, ex.Message);
-                            return;
+                            break;
                         }
                         //increase or decrease stock
                         str = _validate.ValidationPrompt("Enter Amount increase/decrease stock by:", ValidationService.ValidateInt);
@@ -134,7 +136,7 @@ namespace UI
                             return;
                         }
                         //Get Number for stock
-                        str = _validate.ValidationPrompt("Enter Initial number of Products in Stock", ValidationService.ValidateInt);
+                        str = _validate.ValidationPrompt("Enter Initial number of Products in Stock", ValidationService.ValidatePositiveInt);
                         int stock = int.Parse(str);
                         // Add Product to Inventory
                         try{

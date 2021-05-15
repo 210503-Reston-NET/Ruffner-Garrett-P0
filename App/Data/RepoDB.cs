@@ -1,11 +1,11 @@
 using System.Data;
-using System.Runtime.CompilerServices;
-using System.Reflection.Metadata;
 using System.Collections.Generic;
 using System.Linq;
 using Models =StoreModels;
 using Entity = Data.Entities;
 using System;
+using Microsoft.EntityFrameworkCore.Storage;
+using Serilog;
 
 namespace Data
 {
@@ -16,6 +16,7 @@ namespace Data
         {
             _context = context;
         }
+        private IDbContextTransaction _transaction;
         public void AddCustomer(Models.Customer customer)
         {
             _context.Customers.Add(
@@ -214,6 +215,22 @@ namespace Data
             eItem.Quantity = item.Quantity;
             var thing =  _context.InventoryItems.Update(eItem);            
             _context.SaveChanges();
+        }
+
+        public void StartTransaction()
+        {
+          _transaction = _context.Database.BeginTransaction();
+        }
+
+        public void EndTransaction(bool success)
+        {
+            if(success){
+                _transaction.Commit();
+                Log.Information("Transaction Commited Successfully");
+            }else{
+                _transaction.Rollback();
+                Log.Error("Transaction Failed. Rolled back.");
+            }
         }
     }
 }

@@ -35,9 +35,17 @@ namespace Service
             string pattern = @"^[+-]?[0-9]+$";
             return ValidateFromRegex(input, pattern);
         }
+        public static bool ValidatePositiveInt(string input){
+            string pattern = @"^[+]?[0-9]+$";
+            return ValidateFromRegex(input, pattern);
+        }
+        public static bool ValidateNegativeInt(string input){
+            string pattern = @"^[-][0-9]+$";
+            return ValidateFromRegex(input, pattern);
+        }
          
         public static bool ValidateIntWithinRange(string input, int low, int high){
-            string pattern= @"^[-]?[0-9]+$";
+            string pattern= @"^[+-]?[0-9]+$";
             if(ValidateFromRegex(input, pattern)){
                 return ValidateWithinRange(int.Parse(input), low, high);
             }else{

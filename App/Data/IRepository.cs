@@ -26,5 +26,8 @@ namespace Data
         void UpdateInventoryItem(Location location, Item item);
 
         public void AddProductToInventory(Location location, Item item);
+
+        public void StartTransaction();
+        public void EndTransaction(bool success);
     }
 }

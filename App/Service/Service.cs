@@ -113,18 +113,40 @@ namespace Service
         {
             Order order = new Order(customer, location, items);
             //make sure that location has stock then decrease stock
-            // Ehhhh I'll do it later
+                //For each item in items, get relavant item from location and try to decrease stock
+                    //Then call UpdateInventoryItem(Models.Location location, Models.Item item) with each updated item.
+            //This is going to be kinda slow n^2 time :(
+            //Start transaction
+            _repo.StartTransaction();
+            try{
+                foreach (Item item in items)
+                {
+                    SellItems(location, item);
+                }
+            }catch(Exception ex){
+                Log.Error("Could not update stock From order. Rolling back",ex, ex.Message);
+                _repo.EndTransaction(false);
+                throw new Exception("Not enough of an Item in stock.");
+            }
             // foreach (Item item in items)
             // {
             //     location.Inventory.
             // }
             try{
             _repo.PlaceOrder(order);
+            _repo.EndTransaction(true);
             }catch(Exception ex )
             {
-
+                _repo.EndTransaction(false);
                 Log.Error("Failed to place order\n{0}\n{1}\n{2}", ex, ex.Message, ex.StackTrace);
             }
+        }
+        private void SellItems(Location location, Item oItem){
+            //get item from inventory then reduce quantity by specified amount
+            List<Item> sItems = location.Inventory;
+            Item lItem = sItems.Find(i => i.Product == oItem.Product);
+            lItem.ChangeQuantity(-oItem.Quantity); 
+            _repo.UpdateInventoryItem(location, lItem);
         }
 
         public Customer SearchCustomers(string name)

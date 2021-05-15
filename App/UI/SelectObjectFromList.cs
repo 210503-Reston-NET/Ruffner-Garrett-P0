@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System;
 using Service;
 using StoreModels;
+using Serilog;
 namespace UI
 {
     public static class SelectFromList
@@ -18,11 +19,13 @@ namespace UI
                 {
                     Console.WriteLine("[{0}] {1}", i++, item.ToString());
                 }
-               Console.WriteLine("Enter Your Selection:");
-               input = Console.ReadLine();
-               if(input == "0"){
-                   return null;
-               }
+                Console.WriteLine("Enter Your Selection:");
+                input = Console.ReadLine();
+                if(input == "0"){
+                    Log.Information("0 selected In Selection Menu");
+                    return null;
+                  
+                }
             }while(!ValidationService.ValidateIntWithinRange(input, 1, objects.Count));
 
            int selection = int.Parse(input);

@@ -183,7 +183,7 @@ namespace UI
                 do
                 {
                     Console.Clear();
-                    Console.WriteLine("Main Menu:");
+                    Console.WriteLine("View Orders:");
                     Console.WriteLine("[0] Exit");
                     Console.WriteLine("[1] View By customer");
                     Console.WriteLine("[2] View By Location");
@@ -200,6 +200,7 @@ namespace UI
                         case "2":
                             //View by Location
                             //Choose location
+                            ViewByLocation();
                         break;
                     }
                 } while (repeat);
@@ -234,7 +235,29 @@ namespace UI
             }
         }
         private void ViewByLocation(){
+            try{ 
+                List<Object> objs = _services.GetAllLocations().Cast<Object>().ToList<Object>();
+                
+                Object ret = SelectFromList.Start(objs);
+                Location location = (Location) ret;
 
+                //get list of order history
+                List<Object> orderList =  _services.GetOrders(location).Cast<Object>().ToList<Object>();
+                ret = SelectFromList.Start(orderList);
+                Order o = (Order) ret;
+                List<Item> items = o.Items;
+                items.ForEach(d => Console.WriteLine(d.ToString()));
+                Console.WriteLine("Press Any Key to Continue ...");
+                Console.ReadKey();
+
+            }catch(NullReferenceException ex){
+                Log.Verbose("Returned null from Location Selection", ex, ex.Message);
+                Console.WriteLine("Cancelled Selection");
+                Console.WriteLine("Press Any Key to Continue ...");
+                Console.ReadKey();
+            }catch(Exception ex){
+                Log.Error(ex, ex.Message);
+            }
         }
         private void CreateNewOrder(){
             //Get Customer
@@ -247,7 +270,7 @@ namespace UI
             
             //Choose Items and Quanitity from inventory
             List<Item> itms = GetItems(loc);
-            if(itms == null) return;
+            if(itms.Count == 0) return;
 
             Double total = _services.CalculateOrderTotal(itms);
 
@@ -263,6 +286,7 @@ namespace UI
                 }catch(Exception ex ){
                     Console.WriteLine("Order Failed");
                     Console.WriteLine("Press Any Key to Continue ...");
+                    Console.ReadKey();
                     Log.Error("Placing An Order Failed", ex, ex.Message, ex.StackTrace);
                 }
             }
@@ -272,14 +296,40 @@ namespace UI
             //Only allows one item to be selected also no stock checking
             List<Item> selectedItem = new List<Item>();
             string str;
-                try{ 
-                    List<Object> objectList = loc.Inventory.Cast<Object>().ToList<Object>();
-                    
-                    Object ret = SelectFromList.Start(objectList);
-                    Item itm = (Item) ret;
-                    Product p = itm.Product;
-                    str = _validate.ValidationPrompt("Enter Qunatity to Purchase", ValidationService.ValidateInt);
-                    selectedItem.Add(new Item(p, int.Parse(str)));
+            bool cont = true;
+                try{
+                    do{
+                        Console.Clear();
+                        List<Object> objectList = loc.Inventory.Cast<Object>().ToList<Object>();
+                        
+                        Object ret = SelectFromList.Start(objectList);
+                        Item itm = (Item) ret;
+                        Product p = itm.Product;
+                        str = _validate.ValidationPrompt("Enter Quantity to Purchase", ValidationService.ValidatePositiveInt);
+                        //make sure that the item isnt already in the order bc db cannot handle it
+
+                        selectedItem.Add(new Item(p, int.Parse(str)));
+                        bool innercont = true;
+                        do{
+                            Console.Clear();
+                            Console.WriteLine("[0] Continue With Order");
+                            Console.WriteLine("[1] Add Another Item");
+                            str = Console.ReadLine();
+                            switch(str){
+                                case "0":
+                                    innercont = false;
+                                    cont = false;
+                                break;
+                                case "1":
+                                    innercont = false;
+                                break;
+                                default:
+                                    Console.WriteLine("Invalid entry.");
+                                break;
+                            }
+                        }while(innercont);
+
+                    }while(cont);
                     
                 }catch(NullReferenceException ex){
                     Log.Verbose("Returned null from Item Selection", ex, ex.Message);
@@ -304,8 +354,6 @@ namespace UI
 
                 Console.Clear();
                 Console.WriteLine("Customer selected: {0}", cust.ToString());
-                // Console.WriteLine("Press Any Key to Continue ...");
-                // Console.ReadKey();
 
             }catch(NullReferenceException ex){
                 Log.Verbose("Returned null from Customer Selection", ex, ex.Message);
