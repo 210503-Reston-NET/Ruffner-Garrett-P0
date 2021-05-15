@@ -17,8 +17,8 @@ namespace Data
 
         public List<Customer> GetAllCustomers();
         public List<Location> GetAllLocations();
-        public List<Order> GetOrders(Customer customer);
-        public List<Order> GetOrders(Location location);
+        public List<Order> GetOrders(Customer customer, bool price, bool asc);
+        public List<Order> GetOrders(Location location, bool price, bool asc);
         public void AddLocation(Location location);
         public void PlaceOrder(Order order);
         public void AddProduct(Product product);

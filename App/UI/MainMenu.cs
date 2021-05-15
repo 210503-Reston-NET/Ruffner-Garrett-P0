@@ -216,8 +216,48 @@ namespace UI
                 Object ret = SelectFromList.Start(objs);
                 Customer customer = (Customer) ret;
 
+                 //Get input on how to sort list
+                bool inpt = true;
+                bool price = true;
+                bool asc = true;
+                string str;
+                do{
+                    Console.Clear();
+                    Console.WriteLine("[0] Sort By Price Ascending");
+                    Console.WriteLine("[1] Sort By Price Descending");
+                    Console.WriteLine("[2] Sort By Date Ascending");
+                    Console.WriteLine("[3] Sort By Date Descending");
+                    str = Console.ReadLine();
+                    switch(str){
+                        case "0":
+                            price = true;
+                            asc = true;
+                            inpt = false;
+                        break;
+                        case "1":
+                            price = true;
+                            asc = false;
+                            inpt = false;
+                        break;
+                        case "2":
+                            price = false;
+                            asc = true;
+                            inpt = false;
+                        break;
+                        case "3":
+                            price = false;
+                            asc = false;
+                            inpt = false;
+                        break;
+                        default:
+                            Console.WriteLine("Invalid entry.");
+                        break;
+                    }
+                }while(inpt);
+
+
                 //get list of order history
-                List<Object> orderList =  _services.GetOrders(customer).Cast<Object>().ToList<Object>();
+                List<Object> orderList =  _services.GetOrders(customer, price, asc).Cast<Object>().ToList<Object>();
                 ret = SelectFromList.Start(orderList);
                 Order o = (Order) ret;
                 List<Item> items = o.Items;
@@ -241,8 +281,49 @@ namespace UI
                 Object ret = SelectFromList.Start(objs);
                 Location location = (Location) ret;
 
+                //Get input on how to sort list
+                bool inpt = true;
+                bool price = true;
+                bool asc = true;
+                string str;
+                do{
+                    Console.Clear();
+                    Console.WriteLine("[0] Sort By Price Ascending");
+                    Console.WriteLine("[1] Sort By Price Descending");
+                    Console.WriteLine("[2] Sort By Date Ascending");
+                    Console.WriteLine("[3] Sort By Date Descending");
+                    str = Console.ReadLine();
+                    switch(str){
+                        case "0":
+                            price = true;
+                            asc = true;
+                            inpt = false;
+                        break;
+                        case "1":
+                            price = true;
+                            asc = false;
+                            inpt = false;
+                        break;
+                        case "2":
+                            price = false;
+                            asc = true;
+                            inpt = false;
+                        break;
+                        case "3":
+                            price = false;
+                            asc = false;
+                            inpt = false;
+                        break;
+                        default:
+                            Console.WriteLine("Invalid entry.");
+                        break;
+                    }
+                }while(inpt);
+
+                
+
                 //get list of order history
-                List<Object> orderList =  _services.GetOrders(location).Cast<Object>().ToList<Object>();
+                List<Object> orderList =  _services.GetOrders(location, price, asc).Cast<Object>().ToList<Object>();
                 ret = SelectFromList.Start(orderList);
                 Order o = (Order) ret;
                 List<Item> items = o.Items;

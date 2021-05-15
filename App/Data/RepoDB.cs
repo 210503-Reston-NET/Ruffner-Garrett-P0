@@ -104,12 +104,12 @@ namespace Data
             ).ToList();
         }
 
-        public List<Models.Order> GetOrders(Models.Customer customer)
+        public List<Models.Order> GetOrders(Models.Customer customer, bool price, bool asc)
         {
             //OH GOD ITS SO GROSS
             //SOMEONE HELP ME FIND A BETTER WAY
             //Had to use client side Evelaution for where clause
-            // int customerId = GetCustomer(customer).Id;
+            
             List<Models.Order> mOrders=  _context.Orders.Select(
                 order => new Models.Order(
                    new Models.Customer(order.Customer.Name, order.CustomerId),
@@ -122,23 +122,31 @@ namespace Data
                                (int) i.Quantity)).ToList(),
                 (DateTime) order.Date)
             ).AsEnumerable().Where(order => order.Customer.Name == customer.Name).ToList();
-            
 
-            return mOrders;          
+            Func<Models.Order, double> orderbyprice = order => order.Total;
+            Func<Models.Order, DateTime> orderbydate = order => order._date;
+            // IOrderedEnumerable<out Models.Order> a = mOrders; 
+            //IOrderedEnumerable<StoreModels.Order> a = mOrders;
+            IOrderedEnumerable<StoreModels.Order> temp = null;
+            if(price){
+                //order by total
+              temp =  mOrders.OrderBy(orderbyprice);
+            }else{
+                //order by date
+              temp = mOrders.OrderBy(orderbydate);
+            }
+            //Already in ascending order by default. Either reverse it or don't
+            if(!asc){
+                mOrders = temp.Reverse().ToList();
+            }else{
+                mOrders = temp.ToList();
+            }            
+
+            return mOrders;         
             
         }
-        // order => new Models.Order(
-        //            new Models.Customer(order.Customer.Name),
-        //            new Models.Location(order.Location.LocationName, order.Location.Address),
-        //            order.OrderItems.Select(
-        //                i => new Models.Item(
-        //                    new Models.Product(
-        //                        i.Product.Name,
-        //                        (double) i.Product.Price),
-        //                        (int) i.Quantity)).ToList(),
-        //         (DateTime) order.Date)
 
-        public List<Models.Order> GetOrders(Models.Location location)
+        public List<Models.Order> GetOrders(Models.Location location, bool price, bool asc)
         {
             List<Models.Order> mOrders=  _context.Orders.Select(
                 order => new Models.Order(
@@ -152,6 +160,25 @@ namespace Data
                                (int) i.Quantity)).ToList(),
                 (DateTime) order.Date)
             ).AsEnumerable().Where(order => order.Location.LocationName == location.LocationName).ToList();
+
+            Func<Models.Order, double> orderbyprice = order => order.Total;
+            Func<Models.Order, DateTime> orderbydate = order => order._date;
+            // IOrderedEnumerable<out Models.Order> a = mOrders; 
+            //IOrderedEnumerable<StoreModels.Order> a = mOrders;
+            IOrderedEnumerable<StoreModels.Order> temp = null;
+            if(price){
+                //order by total
+              temp =  mOrders.OrderBy(orderbyprice);
+            }else{
+                //order by date
+              temp = mOrders.OrderBy(orderbydate);
+            }
+            //Already in ascending order by default. Either reverse it or don't
+            if(!asc){
+                mOrders = temp.Reverse().ToList();
+            }else{
+                mOrders = temp.ToList();
+            }            
 
             return mOrders;
         }

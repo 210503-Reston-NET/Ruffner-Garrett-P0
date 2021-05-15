@@ -94,14 +94,14 @@ namespace Service
 
         }
 
-        public List<Order> GetOrders(Customer customer)
+        public List<Order> GetOrders(Customer customer, bool price, bool asc)
         {
-           return _repo.GetOrders(customer);
+           return _repo.GetOrders(customer, price, asc);
         }
 
-        public List<Order> GetOrders(Location location)
+        public List<Order> GetOrders(Location location, bool price, bool asc)
         {
-            return _repo.GetOrders(location);
+            return _repo.GetOrders(location, price, asc);
         }
 
         public List<Product> GetAllProducts()

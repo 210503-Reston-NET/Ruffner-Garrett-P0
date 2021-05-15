@@ -12,8 +12,8 @@ namespace Service
         public void AddProductToInventory(Location location, Product product, int stock);
         public void AddLocation(string name, string address);
         public Customer SearchCustomers(string name);
-        public List<Order> GetOrders(Customer customer);
-        public List<Order> GetOrders(Location location);
+        public List<Order> GetOrders(Customer customer, bool price, bool asc);
+        public List<Order> GetOrders(Location location, bool price, bool asc);
         public void PlaceOrder(Location location, Customer customer, List<Item> items);
         public void updateItemInStock(Location location, Item item, int amount);
 
