@@ -1,3 +1,4 @@
+using System.Net.Mail;
 using System;
 using System.Collections.Generic;
 namespace StoreModels
@@ -7,20 +8,23 @@ namespace StoreModels
     /// </summary>
     public class Customer
     {
+
         public Customer(string name)
         {
             this.Name = name;
         }
-        public Customer(string name, int id) : this(name)
+        public Customer(string name, string Address, MailAddress Email) : this(name)
         {
-            this.ID = id;
+            this.Address = Address;
+            this.Email = Email;
         }
         public override string ToString()
         {
             return String.Format("{0}", this.Name);
         }
         public string Name { get; set; }
-        public int ID { get; set; }
+        public string Address { get; set; }
+        public MailAddress Email { get; set; }
         
     }
 }

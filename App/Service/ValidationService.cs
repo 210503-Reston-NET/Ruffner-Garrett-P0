@@ -1,3 +1,4 @@
+using System.Net.Mail;
 using System.ComponentModel;
 using System.Text.RegularExpressions;
 using System;
@@ -33,6 +34,15 @@ namespace Service
                 return false;
             }
             
+        }
+        public static bool ValidateEmail(string input)
+        {   
+            try{
+                MailAddress addr = new MailAddress(input);
+            }catch(Exception){
+                return false;
+            }
+            return true;
         }
         public static bool ValidateInt(string input)
         {

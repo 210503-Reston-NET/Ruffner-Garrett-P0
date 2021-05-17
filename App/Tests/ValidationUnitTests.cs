@@ -1,3 +1,4 @@
+using System;
 using Xunit;
 using VS = Service.ValidationService;
 
@@ -108,6 +109,16 @@ namespace Tests
             Assert.False(VS.ValidateIntWithinRange("-10", 0,10));
             Assert.False(VS.ValidateIntWithinRange("", 0,1));
             Assert.False(VS.ValidateIntWithinRange(" ", 0,1));
+        }
+        [Fact]
+        public void ValidateEmailTest()
+        {
+            Assert.True(VS.ValidateEmail("asdf@asdf.asdf"));
+            Assert.True(VS.ValidateEmail("101@a.b"));
+            Assert.False(VS.ValidateEmail("@lkasjdff.sdkf.sdf"));
+            Assert.False(VS.ValidateEmail("a@lkasjdf@...83f.sdkf.sdf.0"));
+            Assert.False(VS.ValidateEmail(" "));
+            Assert.False(VS.ValidateEmail(""));
         }
         
     }
