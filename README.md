@@ -33,7 +33,7 @@ Making dotnet commands easy. No more --project arguments or file paths.
 - [x] Exception Handling
 - [x] Input validation
 - [x] Logging (to a file, no logging to the console)
-- [ ] At least 10 unit tests
+- [x] At least 10 unit tests
 - [x] Data should be persisted, (no data should be hard coded)
 - [x] You should use a DB to store data
 - [x] DB structure should be 3NF
