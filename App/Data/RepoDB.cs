@@ -106,7 +106,7 @@ namespace Data
             //Had to use client side Evelaution for where clause            
             List<Models.Order> mOrders=  _context.Orders.Select(
                 order => new Models.Order(
-                   new Models.Customer(order.Customer.Name, order.CustomerId),
+                   new Models.Customer(order.Customer.Name),
                    new Models.Location(order.Location.LocationName, order.Location.Address),
                    order.OrderItems.Select(
                        i => new Models.Item(
