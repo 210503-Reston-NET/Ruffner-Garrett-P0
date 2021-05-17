@@ -10,7 +10,6 @@ namespace StoreModels
         public Customer(string name)
         {
             this.Name = name;
-            // this.Orders = orders;
         }
         public Customer(string name, int id) : this(name)
         {

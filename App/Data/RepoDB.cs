@@ -53,10 +53,7 @@ namespace Data
         }
 
         public void AddProductToInventory(Models.Location location, Models.Item item)
-        { 
-            // int eLocationId = GetLocation(location);
-            // int eProductID = GetProduct(item.Product).Id;
-            //Need location ID PRoduct ID and quantity
+        {
             _context.InventoryItems.Add( 
                 new Entity.InventoryItem
                 {
@@ -65,8 +62,6 @@ namespace Data
                     Quantity = item.Quantity
                 }
            );
-
-           
            _context.SaveChanges();
         }
 
@@ -108,8 +103,7 @@ namespace Data
         {
             //OH GOD ITS SO GROSS
             //SOMEONE HELP ME FIND A BETTER WAY
-            //Had to use client side Evelaution for where clause
-            
+            //Had to use client side Evelaution for where clause            
             List<Models.Order> mOrders=  _context.Orders.Select(
                 order => new Models.Order(
                    new Models.Customer(order.Customer.Name, order.CustomerId),
@@ -125,9 +119,8 @@ namespace Data
 
             Func<Models.Order, double> orderbyprice = order => order.Total;
             Func<Models.Order, DateTime> orderbydate = order => order._date;
-            // IOrderedEnumerable<out Models.Order> a = mOrders; 
-            //IOrderedEnumerable<StoreModels.Order> a = mOrders;
             IOrderedEnumerable<StoreModels.Order> temp = null;
+
             if(price){
                 //order by total
               temp =  mOrders.OrderBy(orderbyprice);
@@ -141,9 +134,8 @@ namespace Data
             }else{
                 mOrders = temp.ToList();
             }            
-
+            //return mOrders after results of query have been sorted
             return mOrders;         
-            
         }
 
         public List<Models.Order> GetOrders(Models.Location location, bool price, bool asc)
@@ -163,8 +155,7 @@ namespace Data
 
             Func<Models.Order, double> orderbyprice = order => order.Total;
             Func<Models.Order, DateTime> orderbydate = order => order._date;
-            // IOrderedEnumerable<out Models.Order> a = mOrders; 
-            //IOrderedEnumerable<StoreModels.Order> a = mOrders;
+
             IOrderedEnumerable<StoreModels.Order> temp = null;
             if(price){
                 //order by total
@@ -179,16 +170,13 @@ namespace Data
             }else{
                 mOrders = temp.ToList();
             }            
-
+            //return mOrders after results of query have been sorted
             return mOrders;
         }
 
         public void PlaceOrder(Models.Order mOrder)
-        {
-            // var eCustomer = GetCustomer(mOrder.Customer);
-            // var eLocation = GetLocation(mOrder.Location);
-           
-        
+        {           
+            //First Create order
             Entity.Order eOrder=  new Entity.Order
             {
                 Customer = GetCustomer(mOrder.Customer),
@@ -199,14 +187,12 @@ namespace Data
             
             
             _context.Orders.Add(eOrder);
+            //Save Order to DB so that OrderItems entries have an ID to Reverence in the db
+
+            //This can probably be done with the ef-core change tracker in the future
             _context.SaveChanges();
-            //  List<Entity.OrderItem> eOrderItems = null;
-            // foreach (var item in mOrder.Items)
-            // {
-            //     eOrderItems.Add(new Entity.OrderItem{Quantity = item.Quantity, Product = GetProduct(item.Product)});
-            // }
-            // _context.Add(eOrderItems);
-               
+
+            // Add order Items for the order to the table
             mOrder.Items.ForEach(item => _context.OrderItems.Add(
             new Entity.OrderItem
             {
@@ -218,19 +204,23 @@ namespace Data
             _context.SaveChanges();
         }
         
-        private Entity.Location GetLocation(Models.Location mLocation){
+        private Entity.Location GetLocation(Models.Location mLocation)
+        {
             Entity.Location found =  _context.Locations.FirstOrDefault( o => (o.LocationName == mLocation.LocationName) && (o.Address == mLocation.Address));
             return found;
         }
-        private Entity.Customer GetCustomer(Models.Customer mCustomer){
+        private Entity.Customer GetCustomer(Models.Customer mCustomer)
+        {
             Entity.Customer found =  _context.Customers.FirstOrDefault( o => (o.Name == mCustomer.Name));
             return found;
         }
-        private Entity.Product GetProduct(Models.Product mProduct){
+        private Entity.Product GetProduct(Models.Product mProduct)
+        {
             Entity.Product found = _context.Products.FirstOrDefault(o => (o.Name == mProduct.ProductName)&& (o.Price == mProduct.Price));
             return found;
         }
-        private Entity.InventoryItem GetInventoryItem(Models.Item item, Entity.Location eLocation){
+        private Entity.InventoryItem GetInventoryItem(Models.Item item, Entity.Location eLocation)
+        {
             Entity.InventoryItem found = _context.InventoryItems.FirstOrDefault(o=> (o.Product.Name == item.Product.ProductName) && (o.LocationId == eLocation.Id));
             return found;
         }

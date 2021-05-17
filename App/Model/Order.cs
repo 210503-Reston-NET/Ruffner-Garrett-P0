@@ -38,7 +38,8 @@ namespace StoreModels
 
         public double Total { get=> _total; set{CalculateTotal();}}
         
-        private void CalculateTotal(){
+        private void CalculateTotal()
+        {
             _total = 0;
             foreach (var Item in this.Items)
             {

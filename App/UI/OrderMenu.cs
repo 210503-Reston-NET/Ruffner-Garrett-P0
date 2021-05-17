@@ -1,8 +1,6 @@
 using Service;
-using StoreModels;
 using Serilog;
 using System;
-using System.Collections.Generic;
 namespace UI
 {
     public class OrderMenu : IMenu

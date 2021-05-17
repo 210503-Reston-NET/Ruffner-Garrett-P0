@@ -1,4 +1,3 @@
-using System;
 using Service;
 using Data;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +10,8 @@ namespace UI
     public class MenuFactory
     {
 
-        public static IMenu GetMenu(string menuType){
+        public static IMenu GetMenu(string menuType)
+        {
             
             var configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())

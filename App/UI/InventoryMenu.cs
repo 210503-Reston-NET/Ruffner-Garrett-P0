@@ -1,6 +1,3 @@
-using System.Numerics;
-using System.ComponentModel;
-
 using System;
 using Service;
 using Serilog;
@@ -87,7 +84,8 @@ namespace UI
                             
                             Object ret = SelectFromList.Start(objectList);
                             selectedItem = (Item) ret;
-                            if(selectedItem ==null){
+                            if(selectedItem ==null)
+                            {
                                 throw new NullReferenceException("No Item Selected");
                             }
                             

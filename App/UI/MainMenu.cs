@@ -1,6 +1,3 @@
-using System.Reflection;
-using System.Diagnostics;
-using System.Security.Cryptography.X509Certificates;
 using System.Linq;
 using System;
 using Serilog;
@@ -108,7 +105,8 @@ namespace UI
             
         }
 
-        private void SearchForCustomer(){
+        private void SearchForCustomer()
+        {
             string str;
             str = _validate.ValidationPrompt("Enter Customer Name", ValidationService.ValidatePersonName);
             Customer target = null;
@@ -124,7 +122,8 @@ namespace UI
             Console.ReadKey();
         }
 
-        private void ListCustomers(){
+        private void ListCustomers()
+        {
             try{
                 List<Customer> customers =_services.GetAllCustomers();
                 Console.Clear();
@@ -142,7 +141,8 @@ namespace UI
             Console.ReadKey();
         }
 
-        private void ListLocations(){
+        private void ListLocations()
+        {
             try{
                 List<Location> locations =_services.GetAllLocations();
                 Console.Clear();
@@ -159,7 +159,8 @@ namespace UI
             Console.WriteLine("Press Any Key to Continue ...");
             Console.ReadKey();
         }
-        private void ListProducts(){
+        private void ListProducts()
+        {
              try{
                 List<Product> products =_services.GetAllProducts();
                 Console.Clear();
@@ -177,7 +178,8 @@ namespace UI
             Console.ReadKey();
         }
 
-        private void ViewOrders(){
+        private void ViewOrders()
+        {
             //view by location or by customer
             bool repeat = true;
                 do
@@ -209,7 +211,8 @@ namespace UI
             //order by date asc/desc
         }
 
-        private void ViewByCustomer(){
+        private void ViewByCustomer()
+        {
             try{ 
                 List<Object> objs = _services.GetAllCustomers().Cast<Object>().ToList<Object>();
                 
@@ -274,7 +277,8 @@ namespace UI
                 Log.Error(ex, ex.Message);
             }
         }
-        private void ViewByLocation(){
+        private void ViewByLocation()
+        {
             try{ 
                 List<Object> objs = _services.GetAllLocations().Cast<Object>().ToList<Object>();
                 
@@ -340,7 +344,8 @@ namespace UI
                 Log.Error(ex, ex.Message);
             }
         }
-        private void CreateNewOrder(){
+        private void CreateNewOrder()
+        {
             //Get Customer
             Customer cust = GetCustomer();
             if (cust == null) return;
@@ -358,7 +363,8 @@ namespace UI
             Console.WriteLine("Order Total is: {0}", total);
             Console.WriteLine("Press f to complete order\nAny other Key to Cancel ...");
             ConsoleKeyInfo key = Console.ReadKey();
-            if (key.Key.ToString().ToLower()== "f"){
+            if (key.Key.ToString().ToLower()== "f")
+            {
                 try{
                     _services.PlaceOrder(loc, cust, itms);
                     Console.WriteLine("Order Placed");
@@ -373,7 +379,8 @@ namespace UI
             }
         }
 
-        private List<Item> GetItems(Location loc){
+        private List<Item> GetItems(Location loc)
+        {
             //Only allows one item to be selected also no stock checking
             List<Item> selectedItem = new List<Item>();
             string str;
@@ -425,7 +432,8 @@ namespace UI
                 return selectedItem;
         }
 
-        private Customer GetCustomer(){
+        private Customer GetCustomer()
+        {
             Customer cust = null;
              try{ 
                 List<Object> objs = _services.GetAllCustomers().Cast<Object>().ToList<Object>();
@@ -447,7 +455,8 @@ namespace UI
             }
             return cust;
         }
-        private Location GetLocation(){
+        private Location GetLocation()
+        {
             Location loc = null;
             try{ 
                 List<Object> objectList = _services.GetAllLocations().Cast<Object>().ToList<Object>();

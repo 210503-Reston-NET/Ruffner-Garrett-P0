@@ -21,7 +21,8 @@ namespace StoreModels
         }
         public Product Product { get; set; }
 
-        public int Quantity { 
+        public int Quantity 
+        { 
             get => _quantity; 
             set
             {
@@ -32,7 +33,8 @@ namespace StoreModels
                 }
             } 
         }
-        public void ChangeQuantity(int num){
+        public void ChangeQuantity(int num)
+        {
             this.Quantity = this.Quantity + num;
         }
 

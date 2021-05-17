@@ -1,4 +1,3 @@
-using System.IO;
 using System;
 using StoreModels;
 using Data;
@@ -18,7 +17,8 @@ namespace Service
         public void AddCustomer(string name)
         {   
             Customer newCustomer = new Customer(name);
-            if(CheckForCustomer(newCustomer, _repo.GetAllCustomers())){
+            if(CheckForCustomer(newCustomer, _repo.GetAllCustomers()))
+            {
                 //customer already exists
                 Log.Debug("Customer {} Already exists",newCustomer.Name);
                 throw new Exception("Customer Already Exits");
@@ -33,7 +33,8 @@ namespace Service
         public void AddLocation(string name, string address)
         {
             Location newLocation = new Location(name, address);
-            if(CheckForLocations(newLocation, _repo.GetAllLocations())){
+            if(CheckForLocations(newLocation, _repo.GetAllLocations()))
+            {
                 //customer already exists
                 Log.Debug("Location {} Already exists",newLocation.LocationName);
                 throw new Exception("Location Already Exits");
@@ -48,7 +49,8 @@ namespace Service
         public void AddProduct(string productName, double productPrice)
         {
             Product newProduct = new Product(productName, productPrice);
-             if(CheckForProduct(newProduct, _repo.GetAllProducts())){
+            if(CheckForProduct(newProduct, _repo.GetAllProducts()))
+            {
                 //customer already exists
                 Log.Debug("Product {} Already exists",newProduct.ProductName);
                 throw new Exception("Product Already Exits");
@@ -68,7 +70,8 @@ namespace Service
             //check inventory for product
             foreach (Item item in location.Inventory)
             {
-                if(newItem.Product.ProductName == item.Product.ProductName){
+                if(newItem.Product.ProductName == item.Product.ProductName)
+                {
                     throw new Exception("Product is Already in Inventory");
                 }
             }
@@ -82,16 +85,17 @@ namespace Service
             }
         }
 
-        public List<Customer> GetAllCustomers(){
+        public List<Customer> GetAllCustomers()
+        {
             List<Customer> retVal;
             retVal = _repo.GetAllCustomers();
             return retVal;
         }
-        public List<Location> GetAllLocations(){
+        public List<Location> GetAllLocations()
+        {
             List<Location> retVal;
             retVal = _repo.GetAllLocations();
             return retVal;
-
         }
 
         public List<Order> GetOrders(Customer customer, bool price, bool asc)
@@ -138,7 +142,8 @@ namespace Service
                 Log.Error("Failed to place order\n{0}\n{1}\n{2}", ex, ex.Message, ex.StackTrace);
             }
         }
-        private void SellItems(Location location, Item oItem){
+        private void SellItems(Location location, Item oItem)
+        {
             //get item from inventory then reduce quantity by specified amount
             List<Item> sItems = location.Inventory;
             Item lItem = sItems.Find(i => i.Product == oItem.Product);
@@ -152,7 +157,8 @@ namespace Service
             
             foreach (Customer item in customers)
             {
-                if(name == item.Name){
+                if(name == item.Name)
+                {
                    return item;
                 }
             }
@@ -173,7 +179,8 @@ namespace Service
             }
         }
 
-        private bool CheckForCustomer(Customer customer, List<Customer> Customers){
+        private bool CheckForCustomer(Customer customer, List<Customer> Customers)
+        {
 
             foreach (Customer item in Customers)
             {
@@ -184,18 +191,21 @@ namespace Service
             }
             return false;
         }
-        private bool CheckForLocations(Location location, List<Location> locations){
+        private bool CheckForLocations(Location location, List<Location> locations)
+        {
 
             foreach (Location item in locations)
             {
-                if((location.LocationName == item.LocationName)&&(location.Address == location.Address)){
+                if((location.LocationName == item.LocationName)&&(location.Address == location.Address))
+                {
                     return true;
                 }
             }
 
             return false;
         }
-        private bool CheckForProduct(Product product, List<Product> products){
+        private bool CheckForProduct(Product product, List<Product> products)
+        {
             foreach (Product item in products)
             {
                 if(item.ProductName == product.ProductName)

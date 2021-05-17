@@ -57,7 +57,8 @@ namespace Tests
             Assert.False(VS.ValidateAddress(""));
         }
         [Fact]
-        public void ValidateIntTest(){
+        public void ValidateIntTest()
+        {
             Assert.True(VS.ValidateInt("189239829813"));
             Assert.True(VS.ValidateInt("-189239829813"));
             Assert.True(VS.ValidateInt("-0000189239829813"));
@@ -70,7 +71,8 @@ namespace Tests
             Assert.False(VS.ValidateInt(""));
         }
         [Fact]
-        public void ValidatPositiveIntTest(){
+        public void ValidatPositiveIntTest()
+        {
             Assert.True(VS.ValidatePositiveInt("189239829813"));
             Assert.True(VS.ValidatePositiveInt("+00189239829813"));
             Assert.False(VS.ValidatePositiveInt("+"));
@@ -83,7 +85,8 @@ namespace Tests
             Assert.False(VS.ValidatePositiveInt(""));
         }
         [Fact]
-        public void ValidateNegativeIntTest(){
+        public void ValidateNegativeIntTest()
+        {
             Assert.True(VS.ValidateNegativeInt("-189239829813"));
             Assert.True(VS.ValidateNegativeInt("-00189239829813"));
             Assert.False(VS.ValidateNegativeInt("+"));
@@ -96,7 +99,8 @@ namespace Tests
             Assert.False(VS.ValidateNegativeInt(""));
         }
         [Fact]
-        public void ValidateIntWithinRangeTest(){
+        public void ValidateIntWithinRangeTest()
+        {
             Assert.True(VS.ValidateIntWithinRange("01", 0,10));
             Assert.True(VS.ValidateIntWithinRange("1", 0,1));
             Assert.True(VS.ValidateIntWithinRange("0", 0,1));

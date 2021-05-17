@@ -8,7 +8,8 @@ namespace Tests
         [Theory]
         [InlineData (-10)]
         [InlineData (-5)]
-        public void ItemQuantityTest(int quantity){
+        public void ItemQuantityTest(int quantity)
+        {
             Item itm = new Item(new Product("name",1.00),0);
                 Assert.Throws<Exception>(() => itm.ChangeQuantity(quantity));
         }
@@ -19,7 +20,8 @@ namespace Tests
         [InlineData ("",5)]
         [InlineData ("   ",5)]
 
-        public void ProductPriceTest(string name, double price){
+        public void ProductPriceTest(string name, double price)
+        {
             Assert.Throws<Exception>(() => new Product(name, price));
         }
     }

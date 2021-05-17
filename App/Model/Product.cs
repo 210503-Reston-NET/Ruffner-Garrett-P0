@@ -15,7 +15,8 @@ namespace StoreModels
         {
             return String.Format("{0}, ${1}",this.ProductName, this.Price);
         }
-        public string ProductName { 
+        public string ProductName 
+        { 
             get => _productName; 
             set{
                 if(String.IsNullOrWhiteSpace(value)){
@@ -25,7 +26,8 @@ namespace StoreModels
                 }
             }
         }
-        public double Price { 
+        public double Price 
+        { 
             get => _price; 
             set{
                 if (value < 0){
@@ -35,6 +37,5 @@ namespace StoreModels
                 }
             }
         }
-        //todo: add more properties to define a product (maybe a category?)
     }
 }

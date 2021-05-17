@@ -16,7 +16,6 @@ namespace Service
         public List<Order> GetOrders(Location location, bool price, bool asc);
         public void PlaceOrder(Location location, Customer customer, List<Item> items);
         public void updateItemInStock(Location location, Item item, int amount);
-
         public double CalculateOrderTotal(List<Item> items);
 
     }

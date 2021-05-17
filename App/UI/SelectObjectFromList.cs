@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System;
 using Service;
-using StoreModels;
 using Serilog;
 namespace UI
 {
