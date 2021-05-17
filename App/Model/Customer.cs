@@ -22,7 +22,6 @@ namespace StoreModels
         }
         public string Name { get; set; }
         public int ID { get; set; }
-        //TODO: add more properties to identify the customer
-        // public List<Order> Orders { get; set; }
+        
     }
 }

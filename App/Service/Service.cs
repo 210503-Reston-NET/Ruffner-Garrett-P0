@@ -128,10 +128,7 @@ namespace Service
                 _repo.EndTransaction(false);
                 throw new Exception("Not enough of an Item in stock.");
             }
-            // foreach (Item item in items)
-            // {
-            //     location.Inventory.
-            // }
+
             try{
             _repo.PlaceOrder(order);
             _repo.EndTransaction(true);
