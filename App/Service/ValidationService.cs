@@ -6,25 +6,45 @@ namespace Service
 {
     public static class ValidationService
     {
+        /// <summary>
+        /// Returns False When Regex does not match
+        /// </summary>
+        /// <param name="input">String to be validated</param>
         public static bool ValidatePersonName(string input)
         {
             string pattern = @"^[A-Z][A-Za-z]+ [A-Z][A-Za-z]+$";
             return ValidateFromRegex(input, pattern);
         }
+        /// <summary>
+        /// Returns False When Regex does not match
+        /// </summary>
+        /// <param name="input">String to be validated</param>
         public static bool ValidateCityName(string input)
         {
             string pattern = @"^[A-Za-z \.']+$";
             return ValidateFromRegex(input, pattern);
         }
+        /// <summary>
+        /// Returns False When Regex does not match
+        /// </summary>
+        /// <param name="input">String to be validated</param>
         public static bool ValidateString(string input)
         {
             return !String.IsNullOrWhiteSpace(input);
         }
+        /// <summary>
+        /// Returns False When Regex does not match
+        /// </summary>
+        /// <param name="input">String to be validated</param>
         public static bool ValidateDouble(string input)
         {
             string pattern = @"^(-?)(0|([1-9][0-9]*))(\.[0-9]+)?$";
             return ValidateFromRegex(input, pattern);
         }
+        /// <summary>
+        /// Returns False When Regex does not match
+        /// </summary>
+        /// <param name="input">String to be validated</param>
         public static bool ValidateAddress(string input)
         {
             string pattern= @"^[#.0-9a-zA-Z\s,-]+$";
@@ -35,6 +55,10 @@ namespace Service
             }
             
         }
+        /// <summary>
+        /// Returns False When Email cannot be Converted to MailAddress
+        /// </summary>
+        /// <param name="input">String to be validated</param>
         public static bool ValidateEmail(string input)
         {   
             try{
@@ -44,22 +68,40 @@ namespace Service
             }
             return true;
         }
+        /// <summary>
+        /// Returns False When Regex does not match
+        /// </summary>
+        /// <param name="input">String to be validated</param>
         public static bool ValidateInt(string input)
         {
             string pattern = @"^[+-]?[0-9]+$";
             return ValidateFromRegex(input, pattern);
         }
+        /// <summary>
+        /// Returns False When Regex does not match(Leading + is optional)
+        /// </summary>
+        /// <param name="input">String to be validated</param>
         public static bool ValidatePositiveInt(string input)
         {
             string pattern = @"^[+]?[0-9]+$";
             return ValidateFromRegex(input, pattern);
         }
+        /// <summary>
+        /// Returns False When Regex does not match(Must have leading -)
+        /// </summary>
+        /// <param name="input">String to be validated</param>
         public static bool ValidateNegativeInt(string input)
         {
             string pattern = @"^[-][0-9]+$";
             return ValidateFromRegex(input, pattern);
         }
-         
+        ///<summary>
+        /// Returns False When Regex does not match && Input is not within low,high
+        /// Inclusive
+        /// </summary>
+        /// <param name="input">String to be validated</param>
+        /// <param name="low">Lowest Number Accepted</param>
+        /// <param name="high">Highest Number Accepted</param>        
         public static bool ValidateIntWithinRange(string input, int low, int high)
         {
             string pattern= @"^[+-]?[0-9]+$";

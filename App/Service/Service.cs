@@ -21,8 +21,15 @@ namespace Service
 
         public void AddCustomer(string name, string address, string email)
         {   
-            MailAddress cEmail = new MailAddress(email);
-            Customer newCustomer = new Customer(name, address, cEmail);
+            Log.Debug("Adding new customer: {0}, {1}, {2}", name, address, email);
+             MailAddress cEmail = null;
+             Customer newCustomer = null;
+            try{
+                cEmail = new MailAddress(email);
+                newCustomer = new Customer(name, address, cEmail);
+            }catch(Exception ex){
+                Log.Error("Could not create new customer, {0}\n{1}",ex.Message, ex.StackTrace);
+            }
 
             if(CheckForCustomer(newCustomer, _repo.GetAllCustomers()))
             {
@@ -144,7 +151,7 @@ namespace Service
             }catch(Exception ex){
                 Log.Error("Could not update stock From order. Rolling back",ex, ex.Message);
                 _repo.EndTransaction(false);
-                throw new Exception("Not enough of an Item in stock.");
+                throw new Exception("Not enough of an Item in stock. Order Failed.");
             }
 
             try{
@@ -168,14 +175,16 @@ namespace Service
         }
 
         public Customer SearchCustomers(string name)
-        {           
+        {
+            Log.Verbose("Searching for Customer: {0}",name);         
             List<Customer> customers = GetAllCustomers();
             
             foreach (Customer item in customers)
             {
                 if(name == item.Name)
                 {
-                   return item;
+                    Log.Verbose("Found Customer {0}",item.Name);
+                    return item;
                 }
             }
             Log.Verbose("Customer: {name} not found", name);
@@ -184,13 +193,14 @@ namespace Service
         }
 
         public void updateItemInStock(Location location, Item item, int amount)
-        {
+        {   
+            Log.Debug("Updating stock of {0} at {1} Qunatity:{2}",item.Product.ProductName,location.LocationName, amount);
             item.ChangeQuantity(amount);
             try{
                 _repo.UpdateInventoryItem(location, item);
                 //_repo.UpdateLocation(location);
             }catch(Exception ex){
-                Log.Error("Could not update Location",ex, ex.Message);
+                Log.Error("Could not update inventory at Location",ex, ex.Message);
                 item.ChangeQuantity(-amount);
             }
         }

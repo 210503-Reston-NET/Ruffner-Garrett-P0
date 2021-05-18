@@ -371,7 +371,7 @@ namespace UI
                     Console.WriteLine("Press Any Key to Continue ...");
                     Console.ReadKey();
                 }catch(Exception ex ){
-                    Console.WriteLine("Order Failed");
+                    Console.WriteLine(ex.Message);
                     Console.WriteLine("Press Any Key to Continue ...");
                     Console.ReadKey();
                     Log.Error("Placing An Order Failed", ex, ex.Message, ex.StackTrace);
