@@ -32,9 +32,11 @@ namespace UI
                 switch (input)
                 {
                     case "0":
-                        str = _validate.ValidationPrompt("Enter First and Last Name", ValidationService.ValidatePersonName);
+                        str = _validate.ValidationPrompt("Enter First and Last Name:", ValidationService.ValidatePersonName);
+                        string address = _validate.ValidationPrompt("Enter Customer Address:", ValidationService.ValidateAddress);
+                        string email = _validate.ValidationPrompt("Enter Email For customer", ValidationService.ValidateEmail);
                         try{
-                        _services.AddCustomer(str);
+                        _services.AddCustomer(str, address, email);
                         }catch(Exception ex){
                             Console.WriteLine(ex.Message);
                             Console.WriteLine("Press Any Key to Continue ...");

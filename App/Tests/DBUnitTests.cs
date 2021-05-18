@@ -1,3 +1,4 @@
+using System.Net.Mail;
 using Microsoft.EntityFrameworkCore;
 using Models = StoreModels;
 using Entity = Data.Entities;
@@ -17,7 +18,7 @@ namespace Tests
         //Tests the retrival of all customers as well as adding a new customer
         public void TestCustomersBeingAdded()
         {
-            Models.Customer c = new Models.Customer("Billy Joe");
+            Models.Customer c = new Models.Customer("Billy Joe", "123 Street", new MailAddress("asdf@somewher.net"));
             using (var context = new Entity.p0Context(options)){
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();

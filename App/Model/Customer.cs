@@ -8,16 +8,17 @@ namespace StoreModels
     /// </summary>
     public class Customer
     {
-
-        public Customer(string name)
+        public Customer(string name, string Address, MailAddress Email)
         {
             this.Name = name;
-        }
-        public Customer(string name, string Address, MailAddress Email) : this(name)
-        {
             this.Address = Address;
             this.Email = Email;
         }
+        public Customer(string name, string Address, MailAddress Email, int id) : this(name,Address,Email)
+        {
+           this.ID = id;
+        }
+
         public override string ToString()
         {
             return String.Format("{0}", this.Name);
@@ -25,6 +26,7 @@ namespace StoreModels
         public string Name { get; set; }
         public string Address { get; set; }
         public MailAddress Email { get; set; }
+        public int ID { get; set; }
         
     }
 }

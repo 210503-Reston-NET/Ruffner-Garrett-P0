@@ -22,7 +22,9 @@ namespace Data
             _context.Customers.Add(
                 new Entity.Customer
                 {
-                    Name = customer.Name
+                    Name = customer.Name,
+                    Address = customer.Address,
+                    Email = customer.Email.Address
                 }
             );
             _context.SaveChanges();
@@ -68,7 +70,7 @@ namespace Data
         public List<Models.Customer> GetAllCustomers()
         {
             return _context.Customers.Select(
-                customer => new Models.Customer(customer.Name)
+                customer => new Models.Customer(customer.Name, customer.Address, new System.Net.Mail.MailAddress(customer.Email), customer.Id)
             ).ToList();
         }
 
@@ -106,7 +108,7 @@ namespace Data
             //Had to use client side Evelaution for where clause            
             List<Models.Order> mOrders=  _context.Orders.Select(
                 order => new Models.Order(
-                   new Models.Customer(order.Customer.Name),
+                   new Models.Customer(order.Customer.Name, order.Customer.Address, new System.Net.Mail.MailAddress(order.Customer.Email), order.Customer.Id),
                    new Models.Location(order.Location.LocationName, order.Location.Address),
                    order.OrderItems.Select(
                        i => new Models.Item(
@@ -142,7 +144,7 @@ namespace Data
         {
             List<Models.Order> mOrders=  _context.Orders.Select(
                 order => new Models.Order(
-                   new Models.Customer(order.Customer.Name),
+                   new Models.Customer(order.Customer.Name, order.Customer.Address, new System.Net.Mail.MailAddress(order.Customer.Email), order.Customer.Id),
                    new Models.Location(order.Location.LocationName, order.Location.Address),
                    order.OrderItems.Select(
                        i => new Models.Item(
@@ -211,7 +213,7 @@ namespace Data
         }
         private Entity.Customer GetCustomer(Models.Customer mCustomer)
         {
-            Entity.Customer found =  _context.Customers.FirstOrDefault( o => (o.Name == mCustomer.Name));
+            Entity.Customer found =  _context.Customers.FirstOrDefault( o => o.Id == mCustomer.ID);
             return found;
         }
         private Entity.Product GetProduct(Models.Product mProduct)

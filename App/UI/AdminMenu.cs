@@ -37,15 +37,16 @@ namespace UI
                     break;
                     case "1":
                         //Add Customer
-                        string str;
-                        str = _validate.ValidationPrompt("Enter First and Last Name", ValidationService.ValidatePersonName);
+                        
+                        string name = _validate.ValidationPrompt("Enter First and Last Name:", ValidationService.ValidatePersonName);
+                        string address = _validate.ValidationPrompt("Enter Customer Address:", ValidationService.ValidateAddress);
+                        string email = _validate.ValidationPrompt("Enter Email For customer", ValidationService.ValidateEmail);
                         try{
-                        _services.AddCustomer(str);
+                        _services.AddCustomer(name, address, email);
                         Console.WriteLine("Customer Added");
                         }catch(Exception ex){
                             Log.Debug(ex.Message);
                             Console.WriteLine(ex.Message);
-                            
                         }
                         Console.WriteLine("Press Any Key to Continue ...");
                         Console.ReadKey();

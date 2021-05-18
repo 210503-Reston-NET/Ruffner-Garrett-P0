@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.IO;
 using Data.Entities;
+using System.Net.Mail;
+using System.Net;
 
 namespace UI
 {
@@ -18,6 +20,13 @@ namespace UI
             .AddJsonFile("App/appsettings.json")
             .Build();
 
+            var smtpClient = new SmtpClient(configuration["Smtp:Host"])
+            {
+                Port = int.Parse(configuration["Smtp:Port"]),
+                Credentials = new NetworkCredential(configuration["Smtp:Username"], configuration["Smtp:Password"]),
+                EnableSsl = true,
+            };
+
             string connectionString = configuration.GetConnectionString("StoreDB");
 
             DbContextOptions<p0Context> options = new DbContextOptionsBuilder<p0Context>()
@@ -28,13 +37,13 @@ namespace UI
 
             switch(menuType.ToLower()){
                 case "mainmenu":
-                    return new MainMenu(new Services(new RepoDB(context)), new ValidationUI());
+                    return new MainMenu(new Services(new RepoDB(context), smtpClient), new ValidationUI());
                 case "customermenu":
-                    return new CustomerMenu(new Services(new RepoDB(context)), new ValidationUI());
+                    return new CustomerMenu(new Services(new RepoDB(context), smtpClient), new ValidationUI());
                 case "adminmenu":
-                    return new AdminMenu(new Services(new RepoDB(context)), new ValidationUI());
+                    return new AdminMenu(new Services(new RepoDB(context), smtpClient), new ValidationUI());
                 case "inventorymenu":
-                    return new InventoryMenu(new Services(new RepoDB(context)), new ValidationUI());
+                    return new InventoryMenu(new Services(new RepoDB(context), smtpClient), new ValidationUI());
                 default:
                     return null;
             }

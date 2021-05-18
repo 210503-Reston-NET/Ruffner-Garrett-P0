@@ -1,22 +1,28 @@
+using System.Net.Mail;
 using System;
 using StoreModels;
 using Data;
 using System.Collections.Generic;
 using Serilog;
+using System.ComponentModel;
 
 namespace Service
 {
     public class Services : IService
     {
         private IRepository _repo;
-        public Services(IRepository repo)
+        private SmtpClient _smtp;
+        public Services(IRepository repo, SmtpClient smtpClient)
         {
             _repo = repo;
+            _smtp = smtpClient;
         }
 
-        public void AddCustomer(string name)
+        public void AddCustomer(string name, string address, string email)
         {   
-            Customer newCustomer = new Customer(name);
+            MailAddress cEmail = new MailAddress(email);
+            Customer newCustomer = new Customer(name, address, cEmail);
+
             if(CheckForCustomer(newCustomer, _repo.GetAllCustomers()))
             {
                 //customer already exists
@@ -24,10 +30,41 @@ namespace Service
                 throw new Exception("Customer Already Exits");
             }
             try{
+                SendEmail(newCustomer);
                 _repo.AddCustomer(newCustomer);
             }catch(Exception ex){
-                Log.Error("Failed to Add Customer. {}",ex.Message);
+
+                Log.Error("Failed to Add Customer. {0}\n{1}",ex.Message, ex.StackTrace);
+                throw new Exception("Failed to Add Customer");
             }
+        }
+        private static void SendCompletedCallback(object sender, AsyncCompletedEventArgs e)
+        {
+            // Get the unique identifier for this asynchronous operation.
+             String token = (string) e.UserState;
+
+            if (e.Cancelled)
+            {
+                 Log.Information("[{0}] Send canceled.", token);
+            }
+            if (e.Error != null)
+            {
+                Log.Error("[{0}] {1}", token, e.Error.ToString());
+            } else
+            {
+                Log.Information("Message sent.");
+            }
+        }
+        private void SendEmail(Customer customer)
+        {
+            MailAddress from = new MailAddress("ddaydevtime@gmail.com");
+            string subject = String.Format("Hello {0}, Welcome to watch shop!", customer.Name);
+            string body = String.Format("We have the following info.\nName: {0} \nAddress: {1} \nEmail: {2}", customer.Name, customer.Address, customer.Email.Address);
+            MailMessage mm = new MailMessage(from.Address, customer.Email.Address, subject, body);
+            _smtp.SendCompleted += new SendCompletedEventHandler(SendCompletedCallback);
+            string userState = customer.Email.Address;
+            _smtp.SendAsync(mm, userState);
+            // _smtp.Send(mm);
         }
 
         public void AddLocation(string name, string address)
@@ -43,6 +80,7 @@ namespace Service
                 _repo.AddLocation(newLocation);
             }catch(Exception ex){
                 Log.Error("Failed to Add Location. {}",ex.Message);
+                throw new Exception("Failed to Add Location");
             }
         }
 
@@ -59,6 +97,7 @@ namespace Service
                 _repo.AddProduct(newProduct);
             }catch(Exception ex){
                 Log.Error("Failed to Add Product. {}",ex.Message);
+                throw new Exception("Failed to Add Product");
             }
         }
 
@@ -184,7 +223,7 @@ namespace Service
 
             foreach (Customer item in Customers)
             {
-                if(customer.Name == item.Name)
+                if(customer.Name == item.Name && customer.Address == item.Address && customer.Email == item.Email)
                 {
                     return true;
                 }
