@@ -113,7 +113,7 @@ namespace UI
             try{
                 target =  _services.SearchCustomers(str);
                 Console.Clear();
-                Console.WriteLine("Customer found: {0}", target.Name);
+                Console.WriteLine("Customer found: {0}", target.ToString());
             }catch(Exception ex){
                 Log.Debug(ex.Message);
                 Console.WriteLine(ex.Message);
