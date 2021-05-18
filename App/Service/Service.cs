@@ -11,11 +11,12 @@ namespace Service
     public class Services : IService
     {
         private IRepository _repo;
-        private SmtpClient _smtp;
-        public Services(IRepository repo, SmtpClient smtpClient)
+        private IEmailService _emailService;
+       
+        public Services(IRepository repo, IEmailService emailService)
         {
             _repo = repo;
-            _smtp = smtpClient;
+            _emailService = emailService;
         }
 
         public void AddCustomer(string name, string address, string email)
@@ -26,46 +27,19 @@ namespace Service
             if(CheckForCustomer(newCustomer, _repo.GetAllCustomers()))
             {
                 //customer already exists
-                Log.Debug("Customer {} Already exists",newCustomer.Name);
+                Log.Debug("Customer {0} Already exists",newCustomer.Name);
                 throw new Exception("Customer Already Exits");
             }
             try{
-                SendEmail(newCustomer);
                 _repo.AddCustomer(newCustomer);
+                _emailService.SendWelcomeEmail(newCustomer);
             }catch(Exception ex){
 
                 Log.Error("Failed to Add Customer. {0}\n{1}",ex.Message, ex.StackTrace);
                 throw new Exception("Failed to Add Customer");
             }
         }
-        private static void SendCompletedCallback(object sender, AsyncCompletedEventArgs e)
-        {
-            // Get the unique identifier for this asynchronous operation.
-             String token = (string) e.UserState;
-
-            if (e.Cancelled)
-            {
-                 Log.Information("[{0}] Send canceled.", token);
-            }
-            if (e.Error != null)
-            {
-                Log.Error("[{0}] {1}", token, e.Error.ToString());
-            } else
-            {
-                Log.Information("Message sent.");
-            }
-        }
-        private void SendEmail(Customer customer)
-        {
-            MailAddress from = new MailAddress("ddaydevtime@gmail.com");
-            string subject = String.Format("Hello {0}, Welcome to watch shop!", customer.Name);
-            string body = String.Format("We have the following info.\nName: {0} \nAddress: {1} \nEmail: {2}", customer.Name, customer.Address, customer.Email.Address);
-            MailMessage mm = new MailMessage(from.Address, customer.Email.Address, subject, body);
-            _smtp.SendCompleted += new SendCompletedEventHandler(SendCompletedCallback);
-            string userState = customer.Email.Address;
-            _smtp.SendAsync(mm, userState);
-            // _smtp.Send(mm);
-        }
+        
 
         public void AddLocation(string name, string address)
         {
@@ -73,13 +47,13 @@ namespace Service
             if(CheckForLocations(newLocation, _repo.GetAllLocations()))
             {
                 //customer already exists
-                Log.Debug("Location {} Already exists",newLocation.LocationName);
+                Log.Debug("Location {0} Already exists",newLocation.LocationName);
                 throw new Exception("Location Already Exits");
             }
             try{
                 _repo.AddLocation(newLocation);
             }catch(Exception ex){
-                Log.Error("Failed to Add Location. {}",ex.Message);
+                Log.Error("Failed to Add Location. {0}",ex.Message);
                 throw new Exception("Failed to Add Location");
             }
         }
@@ -90,13 +64,13 @@ namespace Service
             if(CheckForProduct(newProduct, _repo.GetAllProducts()))
             {
                 //customer already exists
-                Log.Debug("Product {} Already exists",newProduct.ProductName);
+                Log.Debug("Product {0} Already exists",newProduct.ProductName);
                 throw new Exception("Product Already Exits");
             }
             try{
                 _repo.AddProduct(newProduct);
             }catch(Exception ex){
-                Log.Error("Failed to Add Product. {}",ex.Message);
+                Log.Error("Failed to Add Product. {0}",ex.Message);
                 throw new Exception("Failed to Add Product");
             }
         }
@@ -117,6 +91,7 @@ namespace Service
             //Product is not in inventory
             //Add Item to Inventory
             try{
+                location.Inventory.Add(newItem);
                 _repo.AddProductToInventory(location, newItem);
             }catch(Exception ex){
                 Log.Error("Failed to Add Product To Inventory {0} \n{1}",ex.Message, ex.StackTrace);
@@ -175,10 +150,12 @@ namespace Service
             try{
             _repo.PlaceOrder(order);
             _repo.EndTransaction(true);
+            _emailService.SendOrderConfirmationEmail(customer, order);
             }catch(Exception ex )
             {
                 _repo.EndTransaction(false);
                 Log.Error("Failed to place order\n{0}\n{1}\n{2}", ex, ex.Message, ex.StackTrace);
+                throw new Exception("Order Failed");
             }
         }
         private void SellItems(Location location, Item oItem)

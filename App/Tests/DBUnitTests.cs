@@ -34,6 +34,8 @@ namespace Tests
                 Models.Customer cdb = cs.ToArray()[0];
                 Assert.True(cs.Count == 1);
                 Assert.Equal(c.Name, cdb.Name);
+                Assert.Equal(c.Address, cdb.Address);
+                Assert.Equal(c.Email, cdb.Email);
                 context.Database.EnsureDeleted();
 
            }
