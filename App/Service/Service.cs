@@ -1,34 +1,45 @@
+using System.Net.Mail;
 using System;
 using StoreModels;
 using Data;
 using System.Collections.Generic;
 using Serilog;
+using System.ComponentModel;
 
 namespace Service
 {
     public class Services : IService
     {
         private IRepository _repo;
-        public Services(IRepository repo)
+        private IEmailService _emailService;
+       
+        public Services(IRepository repo, IEmailService emailService)
         {
             _repo = repo;
+            _emailService = emailService;
         }
 
-        public void AddCustomer(string name)
+        public void AddCustomer(string name, string address, string email)
         {   
-            Customer newCustomer = new Customer(name);
+            MailAddress cEmail = new MailAddress(email);
+            Customer newCustomer = new Customer(name, address, cEmail);
+
             if(CheckForCustomer(newCustomer, _repo.GetAllCustomers()))
             {
                 //customer already exists
-                Log.Debug("Customer {} Already exists",newCustomer.Name);
+                Log.Debug("Customer {0} Already exists",newCustomer.Name);
                 throw new Exception("Customer Already Exits");
             }
             try{
                 _repo.AddCustomer(newCustomer);
+                _emailService.SendWelcomeEmail(newCustomer);
             }catch(Exception ex){
-                Log.Error("Failed to Add Customer. {}",ex.Message);
+
+                Log.Error("Failed to Add Customer. {0}\n{1}",ex.Message, ex.StackTrace);
+                throw new Exception("Failed to Add Customer");
             }
         }
+        
 
         public void AddLocation(string name, string address)
         {
@@ -36,13 +47,14 @@ namespace Service
             if(CheckForLocations(newLocation, _repo.GetAllLocations()))
             {
                 //customer already exists
-                Log.Debug("Location {} Already exists",newLocation.LocationName);
+                Log.Debug("Location {0} Already exists",newLocation.LocationName);
                 throw new Exception("Location Already Exits");
             }
             try{
                 _repo.AddLocation(newLocation);
             }catch(Exception ex){
-                Log.Error("Failed to Add Location. {}",ex.Message);
+                Log.Error("Failed to Add Location. {0}",ex.Message);
+                throw new Exception("Failed to Add Location");
             }
         }
 
@@ -52,13 +64,14 @@ namespace Service
             if(CheckForProduct(newProduct, _repo.GetAllProducts()))
             {
                 //customer already exists
-                Log.Debug("Product {} Already exists",newProduct.ProductName);
+                Log.Debug("Product {0} Already exists",newProduct.ProductName);
                 throw new Exception("Product Already Exits");
             }
             try{
                 _repo.AddProduct(newProduct);
             }catch(Exception ex){
-                Log.Error("Failed to Add Product. {}",ex.Message);
+                Log.Error("Failed to Add Product. {0}",ex.Message);
+                throw new Exception("Failed to Add Product");
             }
         }
 
@@ -78,6 +91,7 @@ namespace Service
             //Product is not in inventory
             //Add Item to Inventory
             try{
+                location.Inventory.Add(newItem);
                 _repo.AddProductToInventory(location, newItem);
             }catch(Exception ex){
                 Log.Error("Failed to Add Product To Inventory {0} \n{1}",ex.Message, ex.StackTrace);
@@ -136,10 +150,12 @@ namespace Service
             try{
             _repo.PlaceOrder(order);
             _repo.EndTransaction(true);
+            _emailService.SendOrderConfirmationEmail(customer, order);
             }catch(Exception ex )
             {
                 _repo.EndTransaction(false);
                 Log.Error("Failed to place order\n{0}\n{1}\n{2}", ex, ex.Message, ex.StackTrace);
+                throw new Exception("Order Failed");
             }
         }
         private void SellItems(Location location, Item oItem)
@@ -184,7 +200,7 @@ namespace Service
 
             foreach (Customer item in Customers)
             {
-                if(customer.Name == item.Name)
+                if(customer.Name == item.Name && customer.Address == item.Address && customer.Email == item.Email)
                 {
                     return true;
                 }

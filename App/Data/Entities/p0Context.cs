@@ -41,6 +41,16 @@ namespace Data.Entities
             {
                 entity.Property(e => e.Id).HasColumnName("ID");
 
+                entity.Property(e => e.Address)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Email)
+                    .IsRequired()
+                    .HasMaxLength(320)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(50)
@@ -50,7 +60,7 @@ namespace Data.Entities
             modelBuilder.Entity<InventoryItem>(entity =>
             {
                 entity.HasKey(e => new { e.LocationId, e.ProductId })
-                    .HasName("PK__Inventor__2CBE68190E7B14B5");
+                    .HasName("PK__Inventor__2CBE681997891104");
 
                 entity.Property(e => e.LocationId).HasColumnName("LocationID");
 
@@ -60,13 +70,13 @@ namespace Data.Entities
                     .WithMany(p => p.InventoryItems)
                     .HasForeignKey(d => d.LocationId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Inventory__Locat__3F115E1A");
+                    .HasConstraintName("FK__Inventory__Locat__56E8E7AB");
 
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.InventoryItems)
                     .HasForeignKey(d => d.ProductId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Inventory__Produ__40058253");
+                    .HasConstraintName("FK__Inventory__Produ__57DD0BE4");
             });
 
             modelBuilder.Entity<Location>(entity =>
@@ -101,19 +111,19 @@ namespace Data.Entities
                     .WithMany(p => p.Orders)
                     .HasForeignKey(d => d.CustomerId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Orders__Customer__3864608B");
+                    .HasConstraintName("FK__Orders__Customer__503BEA1C");
 
                 entity.HasOne(d => d.Location)
                     .WithMany(p => p.Orders)
                     .HasForeignKey(d => d.LocationId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Orders__Location__37703C52");
+                    .HasConstraintName("FK__Orders__Location__4F47C5E3");
             });
 
             modelBuilder.Entity<OrderItem>(entity =>
             {
                 entity.HasKey(e => new { e.OrderId, e.ProductId })
-                    .HasName("PK__OrderIte__08D097C1516D2335");
+                    .HasName("PK__OrderIte__08D097C1D741E2FF");
 
                 entity.Property(e => e.OrderId).HasColumnName("OrderID");
 
@@ -123,18 +133,18 @@ namespace Data.Entities
                     .WithMany(p => p.OrderItems)
                     .HasForeignKey(d => d.OrderId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__OrderItem__Order__43D61337");
+                    .HasConstraintName("FK__OrderItem__Order__5BAD9CC8");
 
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.OrderItems)
                     .HasForeignKey(d => d.ProductId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__OrderItem__Produ__44CA3770");
+                    .HasConstraintName("FK__OrderItem__Produ__5CA1C101");
             });
 
             modelBuilder.Entity<Product>(entity =>
             {
-                entity.HasIndex(e => e.Name, "UQ__Products__737584F684750E93")
+                entity.HasIndex(e => e.Name, "UQ__Products__737584F6D123807E")
                     .IsUnique();
 
                 entity.Property(e => e.Id).HasColumnName("ID");

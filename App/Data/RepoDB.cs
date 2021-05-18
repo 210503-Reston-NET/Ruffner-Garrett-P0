@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using System.Data;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,9 @@ namespace Data
             _context.Customers.Add(
                 new Entity.Customer
                 {
-                    Name = customer.Name
+                    Name = customer.Name,
+                    Address = customer.Address,
+                    Email = customer.Email.Address
                 }
             );
             _context.SaveChanges();
@@ -68,7 +71,7 @@ namespace Data
         public List<Models.Customer> GetAllCustomers()
         {
             return _context.Customers.Select(
-                customer => new Models.Customer(customer.Name)
+                customer => new Models.Customer(customer.Name, customer.Address, new System.Net.Mail.MailAddress(customer.Email), customer.Id)
             ).ToList();
         }
 
@@ -106,7 +109,7 @@ namespace Data
             //Had to use client side Evelaution for where clause            
             List<Models.Order> mOrders=  _context.Orders.Select(
                 order => new Models.Order(
-                   new Models.Customer(order.Customer.Name),
+                   new Models.Customer(order.Customer.Name, order.Customer.Address, new System.Net.Mail.MailAddress(order.Customer.Email), order.Customer.Id),
                    new Models.Location(order.Location.LocationName, order.Location.Address),
                    order.OrderItems.Select(
                        i => new Models.Item(
@@ -142,7 +145,7 @@ namespace Data
         {
             List<Models.Order> mOrders=  _context.Orders.Select(
                 order => new Models.Order(
-                   new Models.Customer(order.Customer.Name),
+                   new Models.Customer(order.Customer.Name, order.Customer.Address, new System.Net.Mail.MailAddress(order.Customer.Email), order.Customer.Id),
                    new Models.Location(order.Location.LocationName, order.Location.Address),
                    order.OrderItems.Select(
                        i => new Models.Item(
@@ -173,35 +176,51 @@ namespace Data
             //return mOrders after results of query have been sorted
             return mOrders;
         }
-
+        
+       
         public void PlaceOrder(Models.Order mOrder)
-        {           
+        {  
+            List<Entity.OrderItem> items = new List<Entity.OrderItem>{};
+            mOrder.Items.ForEach(item => 
+                items.Add(
+                    new Entity.OrderItem
+                    {
+                        // OrderId = eOrder.Id,
+                        Product = GetProduct(item.Product),
+                        Quantity = item.Quantity,
+                    })
+            );         
             //First Create order
             Entity.Order eOrder=  new Entity.Order
             {
                 Customer = GetCustomer(mOrder.Customer),
                 Location = GetLocation(mOrder.Location),
                 Date = mOrder._date,
-                Total = mOrder.Total, 
+                Total = mOrder.Total,
+                OrderItems = items
             };
             
-            
+            try{
             _context.Orders.Add(eOrder);
             //Save Order to DB so that OrderItems entries have an ID to Reverence in the db
 
             //This can probably be done with the ef-core change tracker in the future
             _context.SaveChanges();
+            }catch(Exception ex){
+                Log.Error("Could not add order to db {0}\n {1}", ex.StackTrace, ex.Message);
+                throw new Exception("Order Failed");
+            }
 
-            // Add order Items for the order to the table
-            mOrder.Items.ForEach(item => _context.OrderItems.Add(
-            new Entity.OrderItem
-            {
-                OrderId = eOrder.Id,
-                Product = GetProduct(item.Product),
-                Quantity = item.Quantity,
-            }));
+            // // Add order Items for the order to the table
+            // mOrder.Items.ForEach(item => _context.OrderItems.Add(
+            // new Entity.OrderItem
+            // {
+            //     OrderId = eOrder.Id,
+            //     Product = GetProduct(item.Product),
+            //     Quantity = item.Quantity,
+            // }));
 
-            _context.SaveChanges();
+            // _context.SaveChanges();
         }
         
         private Entity.Location GetLocation(Models.Location mLocation)
@@ -211,7 +230,7 @@ namespace Data
         }
         private Entity.Customer GetCustomer(Models.Customer mCustomer)
         {
-            Entity.Customer found =  _context.Customers.FirstOrDefault( o => (o.Name == mCustomer.Name));
+            Entity.Customer found =  _context.Customers.FirstOrDefault( o => o.Id == mCustomer.ID);
             return found;
         }
         private Entity.Product GetProduct(Models.Product mProduct)

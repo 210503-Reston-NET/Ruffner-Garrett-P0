@@ -130,7 +130,7 @@ namespace UI
                 Console.WriteLine("Customers:");
                 foreach (Customer customer in customers)
                 {
-                    Console.WriteLine(customer.Name);
+                    Console.WriteLine(customer.ToString());
                 }
                 Console.WriteLine();  
             }catch(Exception ex){

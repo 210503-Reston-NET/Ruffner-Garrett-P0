@@ -4,7 +4,7 @@ namespace Service
 {
     public interface IService
     {
-        public void AddCustomer(string name);
+        public void AddCustomer(string name, string address, string email);
         public List<Customer> GetAllCustomers();
         public List<Location> GetAllLocations();
         public List<Product> GetAllProducts();
