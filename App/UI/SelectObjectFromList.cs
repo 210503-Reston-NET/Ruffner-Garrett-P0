@@ -22,7 +22,7 @@ namespace UI
                 input = Console.ReadLine();
                 if(input == "0"){
                     Log.Information("0 selected In Selection Menu");
-                    return null;
+                    throw new NullReferenceException("Selection Canceled");
                   
                 }
             }while(!ValidationService.ValidateIntWithinRange(input, 1, objects.Count));

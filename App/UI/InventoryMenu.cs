@@ -84,10 +84,6 @@ namespace UI
                             
                             Object ret = SelectFromList.Start(objectList);
                             selectedItem = (Item) ret;
-                            if(selectedItem ==null)
-                            {
-                                throw new NullReferenceException("No Item Selected");
-                            }
                             
                         }catch(NullReferenceException ex){
                             Log.Verbose("Returned null from Item Selection", ex, ex.Message);
@@ -128,10 +124,10 @@ namespace UI
                             Console.WriteLine("Cancelled Product Selection");
                             Console.WriteLine("Press Any Key to Continue ...");
                             Console.ReadKey();
-                            return;
+                            break;
                         }catch(Exception ex){
                             Log.Error(ex, ex.Message);
-                            return;
+                            break;
                         }
                         //Get Number for stock
                         str = _validate.ValidationPrompt("Enter Initial number of Products in Stock", ValidationService.ValidatePositiveInt);

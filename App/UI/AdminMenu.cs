@@ -32,7 +32,7 @@ namespace UI
                 {
                     case "0":
                         Console.WriteLine("Bye");
-                        Log.Information("program exit from menu");
+                        Log.Information("program exit from Admin menu");
                         repeat = false;
                     break;
                     case "1":

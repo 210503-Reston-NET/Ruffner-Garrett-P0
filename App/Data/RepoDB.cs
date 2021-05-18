@@ -29,6 +29,7 @@ namespace Data
                 }
             );
             _context.SaveChanges();
+            _context.ChangeTracker.Clear();
         }
 
         public void AddLocation(Models.Location location)
@@ -41,6 +42,7 @@ namespace Data
                 }
             );
            _context.SaveChanges();
+           _context.ChangeTracker.Clear();
         }
 
         public void AddProduct(Models.Product product)
@@ -53,6 +55,7 @@ namespace Data
                }
             );
             _context.SaveChanges();
+            _context.ChangeTracker.Clear();
         }
 
         public void AddProductToInventory(Models.Location location, Models.Item item)
@@ -66,6 +69,7 @@ namespace Data
                 }
            );
            _context.SaveChanges();
+           _context.ChangeTracker.Clear();
         }
 
         public List<Models.Customer> GetAllCustomers()
@@ -206,6 +210,7 @@ namespace Data
 
             //This can probably be done with the ef-core change tracker in the future
             _context.SaveChanges();
+            _context.ChangeTracker.Clear();
             }catch(Exception ex){
                 Log.Error("Could not add order to db {0}\n {1}", ex.StackTrace, ex.Message);
                 throw new Exception("Order Failed");
@@ -251,6 +256,7 @@ namespace Data
             eItem.Quantity = item.Quantity;
             var thing =  _context.InventoryItems.Update(eItem);            
             _context.SaveChanges();
+            _context.ChangeTracker.Clear();
         }
 
         public void StartTransaction()
