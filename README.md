@@ -38,7 +38,7 @@ Making dotnet commands easy. No more --project arguments or file paths.
 - [x] You should use a DB to store data
 - [x] DB structure should be 3NF
 - [x] Should have an ER Diagram
-- [ ] Code should have xml documentation
+- [x] Code should have xml documentation
 
 ## Tech Stack
 - C#
